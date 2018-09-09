@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Engine/Engine.iml" filepath="$PROJECT_DIR$/Engine/Engine.iml" />
-      <module fileurl="file://$PROJECT_DIR$/NinaRow.iml" filepath="$PROJECT_DIR$/NinaRow.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NinaRowApp/NinaRowApp.iml" filepath="$PROJECT_DIR$/NinaRowApp/NinaRowApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NinaRowEngine/NinaRowEngine.iml" filepath="$PROJECT_DIR$/NinaRowEngine/NinaRowEngine.iml" />
     </modules>
   </component>
 </project>

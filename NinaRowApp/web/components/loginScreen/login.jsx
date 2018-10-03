@@ -9,56 +9,46 @@ export default class Login extends React.Component {
     };
   }
 
-  handleLogin(e){
-      e.preventDefault();
-      const userName = e.target.elements.userName.value;
-      if (userName === ""){
+  handleLogin(e) {
+    e.preventDefault();
+    const userName = e.target.elements.userName.value;
+    if (userName === ""){
         this.setState(() => ({
             errMessage: "User name is empty, please try another one"
         }));
-      } else if (userName.length > 15){
+    } else if (userName.length > 15){
         this.setState(() => ({
             errMessage: "User name is too long, please try another one"
         }));
-      }
-
-      //observableAppState.loginPlayer(userName, "Human");
-
+    }
+    else{
+        $.ajax({
+            url: "/users/login",
+            data: "playername=" + userName,
+            dataType: 'json'
+        });
+        // fetch("/users/login", {
+        //     method: "POST",
+        //     body: "playername="+this.username,
+        //     //body: JSON.stringify({playername: this.username}),
+        //     //headers: {'Content-Type': 'application/json'},
+        //     credentials: "include"
+        // }).then(response => {
+        //     if (response.ok) {
+        //         this.setState(() => ({ errMessage: "" }));
+        //         this.props.updateViewManager();
+        //     } else {
+        //         if (response.status === 403) {
+        //             this.setState(() => ({
+        //                 errMessage: "User name already exist, please try another one"
+        //             }));
+        //         }
+        //         console.error("login failed");
+        //     }
+        // });
+        return false;
+    }
   }
-
-  // handleLogin(e) {
-  //   e.preventDefault();
-  //   const userName = e.target.elements.userName.value;
-  //   if (userName === ""){
-  //       this.setState(() => ({
-  //           errMessage: "User name is empty, please try another one"
-  //       }));
-  //   } else if (userName.length > 15){
-  //       this.setState(() => ({
-  //           errMessage: "User name is too long, please try another one"
-  //       }));
-  //   }
-  //   else{
-  //       fetch("/users/addUser", {
-  //           method: "POST",
-  //           body: userName,
-  //           credentials: "include"
-  //       }).then(response => {
-  //           if (response.ok) {
-  //               this.setState(() => ({ errMessage: "" }));
-  //               this.props.updateViewManager();
-  //           } else {
-  //               if (response.status === 403) {
-  //                   this.setState(() => ({
-  //                       errMessage: "User name already exist, please try another one"
-  //                   }));
-  //               }
-  //               console.error("login failed");
-  //           }
-  //       });
-  //       return false;
-  //   }
-  // }
 
     renderErrorMessage() {
         if (this.state.errMessage) {

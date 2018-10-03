@@ -1,17 +1,17 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="NinaRowApp:war exploded">
+  <artifact type="exploded-war" build-on-make="true" name="NinaRowApp:war exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/NinaRowApp_war_exploded</output-path>
     <root id="root">
-      <element id="javaee-facet-resources" facet="NinaRowApp/web/Web" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="NinaRowApp" />
-          <element id="module-output" name="NinaRowEngine" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="gson-2.1" />
+          <element id="artifact" artifact-name="NinaRowEngine:jar" />
         </element>
       </element>
+      <element id="dir-copy" path="$PROJECT_DIR$/NinaRowApp/web" />
     </root>
   </artifact>
 </component>

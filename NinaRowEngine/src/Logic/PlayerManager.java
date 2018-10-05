@@ -16,7 +16,7 @@ public class PlayerManager {
         this.players.add(player);
     }
 
-    public synchronized void removeUser(Player player){this.players.remove(player);}
+    public synchronized void removePlayer(Player player){this.players.remove(player);}
 
     public synchronized Set<Player> getPlayers(){return Collections.unmodifiableSet(this.players);}
 
@@ -25,5 +25,13 @@ public class PlayerManager {
             if(player.getName().equals(name))
                 return true;
         return false;
+    }
+
+    public Player getPlayer(String name){
+        Player selectedPlayer = null;
+        for(Player player : this.players)
+            if(player.getName().equals(name))
+                selectedPlayer = player;
+        return selectedPlayer;
     }
 }

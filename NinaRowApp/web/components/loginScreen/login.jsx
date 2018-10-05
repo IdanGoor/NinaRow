@@ -1,12 +1,26 @@
 import React from "react";
+import Lobby from "../lobbyScreen/lobby.jsx";
 
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
 
     this.state={
+        playerName: "",
         isLoggedIn: false
-    }
+    };
+
+      $.ajax({
+          method:'GET',
+          url: "/users/login",
+          timeout: 4000,
+          success: function(r){
+              this.setState(() => ({
+                  playerName: r,
+                  isLoggedIn: true
+              }));
+          }.bind(this)
+      });
   }
 
   logout(){
@@ -30,10 +44,16 @@ export default class Login extends React.Component {
             error: function(jqXHR, ajaxSetting, error) {
                 console.error("Failed to submit");
                 $("#errorMessage").text("Error: " + jqXHR.responseText);
-            },
+                this.setState(() => ({
+                    playerName: "",
+                    isLoggedIn: false
+                }));
+            }.bind(this),
             success: function(){
-                console.log(this);
-                this.setState(() => ({ isLoggedIn: true }));
+                this.setState(() => ({
+                    playerName: playerName,
+                    isLoggedIn: true
+                }));
             }.bind(this)
         });
         return false;
@@ -64,13 +84,14 @@ export default class Login extends React.Component {
 
   render() {
     return (
+        !this.state.isLoggedIn ?
         <div className={"login-layout"}>
             <form id={"login-form"} onSubmit={this.handleLogin.bind(this)}>
                 <label htmlFor="playerName">
                     Username:{" "}
                 </label>
                 <input name={"playerName"}/><br/>
-                <input type={"radio"} value={"Human"} name={"playerType"} checked/>
+                <input type={"radio"} value={"Human"} name={"playerType"} defaultChecked/>
                 <label>Human</label><br/>
                 <input type={"radio"} value={"Computer"} name={"playerType"}/>
                 <label>Computer</label><br/>
@@ -83,7 +104,7 @@ export default class Login extends React.Component {
             </form>
 
             <div id="errorMessage" className="error-message"/>
-        </div>
+        </div> : <Lobby user={this.state.playerName} logout={this.logout.bind(this)}/>
     );
   }
 }

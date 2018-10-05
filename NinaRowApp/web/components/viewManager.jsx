@@ -13,7 +13,7 @@ export default class ViewManager extends React.Component {
       user: ""
     };
 
-    this.getUser();
+    //this.getUser();
   }
 
   clearUserInfo(){

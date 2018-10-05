@@ -2,23 +2,23 @@ import React from "react";
 import "../../css/lobby/lobby.css";
 import "../../css/lobby/userTable.css";
 
-export default class UserTable extends React.Component {
+export default class PlayerTable extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  renderUserTable() {
+  renderPlayerTable() {
     return (
       <table className={"users-table"}>
         <tbody>
           <tr>
               <th>Name</th>
-              <th>Status</th>
+              <th>Type</th>
           </tr>
-          {Object.keys(this.props.users).map((user, index) => (
-            <tr key={user}>
-              <td key={user + "_" + index + "_name"}>{this.props.users[user].name}</td>
-              <td key={user + "_" + index + "_status"}>{this.props.users[user].status}</td>
+          {Object.keys(this.props.players).map((player, index) => (
+            <tr key={player}>
+              <td key={player + "_" + index + "_name"}>{this.props.players[player].name}</td>
+              <td key={player + "_" + index + "_type"}>{this.props.players[player].type}</td>
             </tr>
           ))}
         </tbody>
@@ -33,7 +33,7 @@ export default class UserTable extends React.Component {
                 Users
             </div>
             <div className={"lobby-column-content lobby-scrollbar"}>
-                {this.renderUserTable()}
+                {this.renderPlayerTable()}
             </div>
         </div>);
   }

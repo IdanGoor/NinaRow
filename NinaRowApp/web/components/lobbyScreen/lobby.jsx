@@ -1,8 +1,8 @@
 import React from "react";
 import "../../css/lobby/lobby.css";
-import UserInfo from "./userInfo.jsx";
+import PlayerInfo from "./playerInfo.jsx";
 import GameTable from "./gameTable.jsx";
-import UserTable from "./userTable.jsx";
+import PlayerTable from "./playerTable.jsx";
 
 export default class Lobby extends React.Component {
   constructor(props) {
@@ -10,20 +10,20 @@ export default class Lobby extends React.Component {
     this.UPDATE_INTERVAL = 2000;
 
     this.state = {
-      users: {}, // all users
+      players: {}, // all players
       games: {}, // all games
       errMessage: ""
     };
 
       this.fetchUsersInterval = setInterval(
-          this.getUsers.bind(this),
+          this.getPlayers.bind(this),
           this.UPDATE_INTERVAL
       );
 
-      this.fetchGamesInterval = setInterval(
-          this.getGames.bind(this),
-          this.UPDATE_INTERVAL
-      );
+      // this.fetchGamesInterval = setInterval(
+      //     this.getGames.bind(this),
+      //     this.UPDATE_INTERVAL
+      // );
   }
 
   componentWillUnmount() {
@@ -31,19 +31,14 @@ export default class Lobby extends React.Component {
     clearInterval(this.fetchGamesInterval);
   }
 
-  getUsers() {
-    return fetch("/users/allUsers", { method: "GET", credentials: "include" })
-      .then(response => {
-        if (!response.ok) {
-          throw response;
-        }
-        return response.json();
-      })
-      .then(data => {
-        this.setState(() => ({ users: data }));
-      })
-      .catch(err => {
-        throw err;
+  getPlayers() {
+      $.ajax({
+          method:'GET',
+          url: "/playerlist",
+          timeout: 4000,
+          success: function(r){
+              this.setState(() => ({ players: r }));
+          }.bind(this)
       });
   }
 
@@ -66,9 +61,9 @@ export default class Lobby extends React.Component {
   render() {
     return (
         <div className={"lobby-layout"}>
-            <UserTable users={this.state.users}/>
-            <GameTable user={this.props.user} games={this.state.games} updateViewManager={this.props.updateViewManager}/>
-            <UserInfo user={this.props.user} updateViewManager={this.props.updateViewManager}/>
+            <PlayerTable players={this.state.players}/>
+            {/*<GameTable user={this.props.playerName} games={this.state.games} updateViewManager={this.props.updateViewManager}/>*/}
+            <PlayerInfo user={this.props.playerName} logout={this.props.logout}/>
         </div>
     );
   }

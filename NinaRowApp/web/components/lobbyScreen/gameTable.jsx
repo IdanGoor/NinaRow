@@ -18,7 +18,7 @@ export default class GameTable extends React.Component {
             gameObjects.push(
                 <GameTableBox
                     key={"game_table_object_"+game.name}
-                    user={this.props.user}
+                    user={this.props.playerName}
                     game={game}
                     updateViewManager={this.props.updateViewManager}
                 />
@@ -48,7 +48,7 @@ export default class GameTable extends React.Component {
 
             <div className={"lobby-column-content lobby-scrollbar"}>
                 <GameTableBox
-                    key={"game1"} user={this.props.user} game={null}
+                    key={"game1"} user={this.props.playerName} game={null}
                     updateViewManager={this.props.updateViewManager}
                 />
             </div>

@@ -47,7 +47,7 @@ export default class GameTableBox extends React.Component {
 
     renderDeleteButton() {
         const game = this.props.game;
-        if (this.props.game.creator.name === this.props.user.name) {
+        if (this.props.game.creator.name === this.props.playerName) {
           return (
               <button
                   className={"button-red"}

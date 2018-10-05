@@ -3,30 +3,30 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-    <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>app.servlets.LoginServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/users/login</url-pattern>
-    </servlet-mapping>
+    <!--<servlet>-->
+        <!--<servlet-name>LoginServlet</servlet-name>-->
+        <!--<servlet-class>app.servlets.LoginServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>LoginServlet</servlet-name>-->
+        <!--<url-pattern>/users/login</url-pattern>-->
+    <!--</servlet-mapping>-->
 
-    <servlet>
-        <servlet-name>PlayerListServlet</servlet-name>
-        <servlet-class>app.servlets.PlayerListServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PlayerListServlet</servlet-name>
-        <url-pattern>/playerlist</url-pattern>
-    </servlet-mapping>
+    <!--<servlet>-->
+        <!--<servlet-name>PlayerListServlet</servlet-name>-->
+        <!--<servlet-class>app.servlets.PlayerListServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>PlayerListServlet</servlet-name>-->
+        <!--<url-pattern>/playerlist</url-pattern>-->
+    <!--</servlet-mapping>-->
 
-    <servlet>
-        <servlet-name>GameListServlet</servlet-name>
-        <servlet-class>app.servlets.GameListServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>GameListServlet</servlet-name>
-        <url-pattern>/gamelist</url-pattern>
-    </servlet-mapping>
+    <!--<servlet>-->
+        <!--<servlet-name>GameListServlet</servlet-name>-->
+        <!--<servlet-class>app.servlets.GameListServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>GameListServlet</servlet-name>-->
+        <!--<url-pattern>/gamelist</url-pattern>-->
+    <!--</servlet-mapping>-->
 </web-app>

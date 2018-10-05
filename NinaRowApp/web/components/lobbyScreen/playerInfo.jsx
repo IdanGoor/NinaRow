@@ -3,29 +3,28 @@ import "../../css/lobby/lobby.css";
 import "../../css/lobby/userInfo.css";
 // import AddGameForm from "./addGameForm.jsx";
 
-export default class UserInfo extends React.Component {
+export default class PlayerInfo extends React.Component {
   constructor(props) {
     super(props);
-    this.user = props.user;
+    this.playerName = props.playerName;
     this.state ={
         showAddGameForm: false
     };
   }
 
     logoutHandler() {
-        fetch("/users/logout", { method: "GET", credentials: "include" }).then(
-            response => {
-                if (!response.ok) {
-                    console.log(
-                        `failed to logout user ${this.props.user.name} `,
-                        response
-                    );
-                }
-                else {
-                    this.props.updateViewManager();
-                }
-            }
-        );
+        $.ajax({
+            method:'POST',
+            url: "/users/logout",
+            timeout: 4000,
+            error: function(jqXHR, ajaxSetting, error) {
+                console.error("Failed to logout");
+                $("#errorMessage").text("Error: " + jqXHR.responseText);
+            },
+            success: function(){
+                this.props.logout();
+            }.bind(this)
+        });
     }
 
   toggleAddGameForm(){
@@ -40,7 +39,7 @@ export default class UserInfo extends React.Component {
             </div>
             <div className={"lobby-column-content"}>
                 <div className={"user-info-content"}>
-                    <p><b>Name: </b>{this.user.name}</p>
+                    <p><b>Name: </b>{this.playerName}</p>
                     <button className={"button-green"} onClick={this.toggleAddGameForm.bind(this)}>New Game</button>
                     <button className={"button-red"} onClick={this.logoutHandler.bind(this)}>Logout</button>
                 </div>
@@ -50,6 +49,7 @@ export default class UserInfo extends React.Component {
                 {/*onCloseForm={this.toggleAddGameForm.bind(this)}*/}
                 {/*updateViewManager={this.props.updateViewManager}*/}
             {/*/>*/}
+            <div id="errorMessage" className="error-message"/>
         </div>
     );
   }

@@ -1,7 +1,7 @@
 import React from "react";
 // import gameUtils from "../utils/gameUtils.js";
 import Login from "./loginScreen/login.jsx";
-// import Lobby from "./lobbyScreen/lobby.jsx";
+import Lobby from "./lobbyScreen/lobby.jsx";
 // import Game from "./gameScreen/game.jsx";
 
 export default class ViewManager extends React.Component {
@@ -25,12 +25,12 @@ export default class ViewManager extends React.Component {
   }
 
   renderLobby() {
-    // return (
-    //     <Lobby
-    //       updateViewManager={this.getUser.bind(this)}
-    //       user={this.state.user}
-    //     />
-    // );
+    return (
+        <Lobby
+          updateViewManager={this.getUser.bind(this)}
+          user={this.state.user}
+        />
+    );
   }
 
   renderGameRoom(){

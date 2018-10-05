@@ -37,15 +37,13 @@ public class LoginServlet extends HttpServlet {
                 //no username in session and no username in parameter -
                 //redirect back to the index page
                 //this return an HTTP code back to the browser telling it to load
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 //normalize the username value
                 playerNameFromParameter = playerNameFromParameter.trim();
                 synchronized (this) {
                     if (playerManager.isPlayerExists(playerNameFromParameter)) {
-                        String errorMessage = "Username " + playerNameFromParameter + " already exists. Please enter a different username.";
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                        request.setAttribute(Constants.PLAYER_NAME_ERROR, errorMessage);
+                        response.getWriter().println("Username " + playerNameFromParameter + " already exists");
                     } else {
                         //add the new user to the users list
                         playerManager.addPlayer(playerNameFromParameter, playerTypeFromParameter);
@@ -54,7 +52,7 @@ public class LoginServlet extends HttpServlet {
                         //create a new one
                         request.getSession(true).setAttribute(Constants.PLAYER_NAME, playerNameFromParameter);
                         request.getSession(true).setAttribute(Constants.PLAYER_TYPE, playerTypeFromParameter);
-                        response.setStatus(HttpServletResponse.SC_OK);
+                        response.setStatus(HttpServletResponse.SC_CREATED);
                     }
                 }
             }
@@ -74,6 +72,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("im in get");
         processRequest(request, response);
     }
 
@@ -88,6 +87,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("im in post");
         processRequest(request, response);
     } // </editor-fold>
 }

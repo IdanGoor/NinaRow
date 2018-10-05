@@ -32,7 +32,8 @@ public class UploadGameServlet extends HttpServlet {
                 GameDescriptor gd = GameSerializer.serializeStream(part.getInputStream());
                 //TODO: add the game to the games list
             } catch(Exception e){
-                out.println(e);
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.println(e.getMessage());
             }
         }
     }

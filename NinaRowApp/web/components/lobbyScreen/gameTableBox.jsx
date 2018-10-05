@@ -11,21 +11,17 @@ export default class GameTableBox extends React.Component {
     }
   }
 
-    joinGameHandler(gameName) {
-        fetch("/games/joinGame", {
-            method: "POST",
-            body: JSON.stringify(gameName),
-            credentials: "include"
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw response;
-                }
-                this.props.updateViewManager();
-            })
-            .catch(err => {
-                throw err;
-            });
+    joinGameHandler(gameTitle) {
+        $.ajax({
+            method:'POST',
+            data: gameTitle,
+            url: "/joinGame",
+            timeout: 4000,
+            success: function(){
+                //TODO: add error message
+                this.props.joinGame();
+            }.bind(this)
+        });
     }
 
     deleteGameHandler(gameName) {
@@ -46,17 +42,17 @@ export default class GameTableBox extends React.Component {
     }
 
     renderDeleteButton() {
-        const game = this.props.game;
-        if (this.props.game.creator.name === this.props.playerName) {
-          return (
-              <button
-                  className={"button-red"}
-                  style={{fontSize: "14px"}}
-                  onClick={this.deleteGameHandler.bind(this, game.name)}>
-                    Delete
-              </button>
-          );
-        }
+        // const game = this.props.game;
+        // if (this.props.game.creator.name === this.props.playerName) {
+        //   return (
+        //       <button
+        //           className={"button-red"}
+        //           style={{fontSize: "14px"}}
+        //           onClick={this.deleteGameHandler.bind(this, game.name)}>
+        //             Delete
+        //       </button>
+        //   );
+        // }
     }
 
     renderJoinButton(){
@@ -91,23 +87,28 @@ export default class GameTableBox extends React.Component {
     }
 
   render() {
-    const name = this.props.game.name;
+    const title = this.props.game.dynamicPlayers.gameTitle;
     const creator = this.props.game.creator.name;
-    const playersPending = this.props.game.players.length;
-    const playerLimit = this.props.game.playerLimit;
+    const rows = this.props.game.game.board.rows;
+    const columns = this.props.game.game.board.columns;
+    const target = this.props.game.game.target;
+    const variant = this.props.game.game.variant;
     const status = this.props.game.status;
-    const PCPlayer = this.props.game.isPCPlayerIn ? "include" : "not include";
+    const playerLimit = this.props.game.dynamicPlayers.totalPlayers;
+    const playersPending = this.props.game.dynamicPlayers.players.length;
 
     return (
         <div className={"game-table-box"}>
-            <div className={"game-table-box-headline"}>{name}</div>
+            <div className={"game-table-box-headline"}>{title}</div>
             <div>
                 <div className={"game-table-box-details"}>
                     <ul className={"game-table-box-cells"}>
                         <li className={"game-table-box-cell"}><u>Creator:</u>&nbsp;{creator}</li>
                         <li className={"game-table-box-cell"}><u>Players:</u>&nbsp;{playersPending}/{playerLimit}</li>
+                        <li className={"game-table-box-cell"}><u>Board:</u>&nbsp;{rows}X{columns} (rows X columns)</li>
+                        <li className={"game-table-box-cell"}><u>Target:</u>&nbsp;{target}</li>
+                        <li className={"game-table-box-cell"}><u>Variant:</u>&nbsp;{variant}</li>
                         <li className={"game-table-box-cell"}><u>Status:</u>&nbsp;{status}</li>
-                        <li className={"game-table-box-cell"}><u>PC player:</u>&nbsp;{PCPlayer}</li>
                     </ul>
                 </div>
             </div>

@@ -10,6 +10,7 @@ export default class Lobby extends React.Component {
     this.UPDATE_INTERVAL = 2000;
 
     this.state = {
+      isJoinedGame: false,
       players: {}, // all players
       games: {}, // all games
       errMessage: ""
@@ -44,7 +45,6 @@ export default class Lobby extends React.Component {
   }
 
   getGames() {
-      console.log(this.state.games);
       $.ajax({
           method:'GET',
           url: "/gamelist",
@@ -56,11 +56,20 @@ export default class Lobby extends React.Component {
       });
   }
 
+  joinGame(){
+      this.setState(() => ({ isJoinedGame: true }));
+  }
+
+  leaveGame(){
+      this.setState(() => ({ isJoinedGame: false }));
+  }
+
   render() {
     return (
         <div className={"lobby-layout"}>
             <PlayerTable players={this.state.players}/>
-            {/*<GameTable user={this.props.playerName} games={this.state.games} updateViewManager={this.props.updateViewManager}/>*/}
+            <GameTable user={this.props.playerName} games={this.state.games}
+                       joinGame={this.joinGame.bind(this)}/>
             <PlayerInfo user={this.props.playerName} logout={this.props.logout}/>
         </div>
     );

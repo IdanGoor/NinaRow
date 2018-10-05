@@ -12,15 +12,15 @@ export default class GameTable extends React.Component {
     const games = this.props.games;
     let gameObjects = [];
 
-    for (let gameName in games){
-        if (games.hasOwnProperty(gameName)) {
-            let game = games[gameName];
+    for (let gameIndex in games){
+        if (games.hasOwnProperty(gameIndex)) {
+            let game = games[gameIndex];
             gameObjects.push(
                 <GameTableBox
-                    key={"game_table_object_"+game.name}
-                    user={this.props.playerName}
+                    key={"game_table_object_"+game.dynamicPlayers.gameTitle}
+                    playerName={this.props.playerName}
                     game={game}
-                    updateViewManager={this.props.updateViewManager}
+                    joinGame={this.props.joinGame}
                 />
             );
         }
@@ -45,15 +45,6 @@ export default class GameTable extends React.Component {
             <div className={"lobby-column-headline"}>
                 Games
             </div>
-
-            <div className={"lobby-column-content lobby-scrollbar"}>
-                <GameTableBox
-                    key={"game1"} user={this.props.playerName} game={null}
-                    updateViewManager={this.props.updateViewManager}
-                />
-            </div>
-
-
             <div className={"lobby-column-content lobby-scrollbar"}>
                 {this.renderGameObjects()}
             </div>

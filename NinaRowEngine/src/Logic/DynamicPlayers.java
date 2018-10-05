@@ -9,6 +9,7 @@
 package Logic;
 
 import javax.xml.bind.annotation.*;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -45,7 +46,7 @@ public class DynamicPlayers {
     @XmlAttribute(name = "game-title", required = true)
     protected String gameTitle;
 
-    protected List<Player> players;
+    protected List<Player> players = new LinkedList<>();
     private int turnPlayerIndex = 0;
     /**
      * Gets the value of the totalPlayers property.

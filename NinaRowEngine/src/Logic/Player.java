@@ -1,7 +1,6 @@
 package Logic;
 
-
-public class Player {
+public class Player{
     public enum Type {
         HUMAN("Human"), COMPUTER("Computer");
 

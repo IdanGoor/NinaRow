@@ -74,14 +74,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Players }
-     * 
-     */
-    public Players createPlayers() {
-        return new Players();
-    }
-
-    /**
      * Create an instance of {@link DynamicPlayers }
      * 
      */

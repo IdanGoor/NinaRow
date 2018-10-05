@@ -35,7 +35,6 @@ import java.util.*;
  *           &lt;/simpleType>
  *         &lt;/element>
  *         &lt;element ref="{}Game"/>
- *         &lt;element ref="{}Players" minOccurs="0"/>
  *         &lt;element ref="{}DynamicPlayers" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -53,6 +52,7 @@ public class GameDescriptor {
     public enum Status {
         ACTIVE, INACTIVE
     }
+
     private static final int ROW_MIN = 5;
     private static final int ROW_MAX = 50;
     private static final int COL_MIN = 6;
@@ -65,8 +65,6 @@ public class GameDescriptor {
     protected String gameType;
     @XmlElement(name = "Game", required = true)
     protected Game game;
-    @XmlElement(name = "Players")
-    protected Players players;
     @XmlElement(name = "DynamicPlayers")
     protected DynamicPlayers dynamicPlayers;
 
@@ -75,9 +73,6 @@ public class GameDescriptor {
     private Random random = new Random();
     private Status status = Status.INACTIVE;
     private boolean isEnded = false;
-
-    @XmlTransient
-    private IUIupdater UIupdater;
 
     /**
      * Gets the value of the gameType property.
@@ -127,38 +122,6 @@ public class GameDescriptor {
         this.game = value;
     }
 
-    /**
-     * Gets the value of the players property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Players }
-     *     
-     */
-    public Players getPlayers() {
-        return players;
-    }
-
-    /**
-     * Sets the value of the players property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Players }
-     *     
-     */
-    public void setPlayers(Players value) {
-        this.players = value;
-    }
-
-    /**
-     * Gets the value of the dynamicPlayers property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link DynamicPlayers }
-     *     
-     */
     public DynamicPlayers getDynamicPlayers() {
         return dynamicPlayers;
     }
@@ -183,8 +146,6 @@ public class GameDescriptor {
         return this.history.getMoves();
     }
 
-    public void setUIupdater(IUIupdater updater){ this.UIupdater = updater; }
-
     public boolean isActive(){
         return this.status == Status.ACTIVE;
     }
@@ -203,19 +164,15 @@ public class GameDescriptor {
         if(game.target.intValue() < TARGET_MIN || game.target.intValue() >= board.rows || game.target.intValue() >= board.columns.intValue())
             throw new Exception("Target value must be smaller than columns size and rows size and at least "+TARGET_MIN);
 
-        if(this.players.player.size() < PLAYERS_MIN || this.players.player.size() > PLAYERS_MAX)
+        if(this.dynamicPlayers.totalPlayers < PLAYERS_MIN || this.dynamicPlayers.totalPlayers > PLAYERS_MAX)
             throw new Exception("The number of players should be between "+PLAYERS_MIN+" and "+PLAYERS_MAX);
 
-        Map<Short, Player> ids = new HashMap<>();
-        for(Player player : this.players.player){
-            if(ids.containsKey(player.id))
-                throw new Exception("Every player should have its own unique key");
-            ids.put(player.id, player);
-        }
+        if(this.dynamicPlayers.gameTitle.isEmpty())
+            throw new Exception("Game should have a title");
     }
 
     public void executePlayerMove(int col, BoardOperation operation){
-        Player activePlayer = this.players.getActivePlayer();
+        Player activePlayer = this.dynamicPlayers.getActivePlayer();
         if(operation.isAllowed(activePlayer, col)){
             operation.execute(activePlayer, col);
             activePlayer.turnAmount++;
@@ -226,7 +183,7 @@ public class GameDescriptor {
     }
 
     public void play(){
-        Player activePlayer = this.players.getActivePlayer();
+        Player activePlayer = this.dynamicPlayers.getActivePlayer();
 
         if (activePlayer.isComputer() && !this.isEnded){
             SleeperTask sleeper = new SleeperTask();
@@ -241,8 +198,6 @@ public class GameDescriptor {
                         int column = this.game.board.pushIn.getRandomOption(activePlayer);
                         executePlayerMove(column, this.game.board.pushIn);
                     }
-
-                    this.UIupdater.updateUI();
                 }
             });
 
@@ -252,22 +207,22 @@ public class GameDescriptor {
     }
 
     public void swapPlayers(){
-        this.players.setNextPlayerAsActive();
-        Player activePlayer = this.players.getActivePlayer();
+        this.dynamicPlayers.setNextPlayerAsActive();
+        Player activePlayer = this.dynamicPlayers.getActivePlayer();
 
         if(this.game.board.isConnectExists()
                 || (this.game.isPopoutMode() && this.game.board.isFull() && !this.game.board.popOut.hasOption(activePlayer))
                 || (!this.game.isPopoutMode() && this.game.board.isFull())
-                || (this.players.player.size() == 1))
+                || (this.dynamicPlayers.players.size() == 1))
             endGame();
         else
             this.play();
     }
 
     public void removePlayer(Player player){
-        boolean wasActive = player.equals(this.players.getActivePlayer());
-        if(this.players.player.contains(player)){
-            this.players.remove(player);
+        boolean wasActive = player.equals(this.dynamicPlayers.getActivePlayer());
+        if(this.dynamicPlayers.players.contains(player)){
+            this.dynamicPlayers.remove(player);
             this.game.board.removeAllPlayerDiscs(player);
             this.game.board.checkConnectFullBoard();
             if(wasActive)
@@ -277,7 +232,7 @@ public class GameDescriptor {
 
     public void startGame(){
         this.turnAmount = 0;
-        this.players.init();
+        this.dynamicPlayers.init();
         this.history.init();
         this.game.init();
         this.isEnded = false;
@@ -294,8 +249,8 @@ public class GameDescriptor {
     public List<Player> getWinners(){
         List<Player> winners = new ArrayList<>();
         if(this.isEnded){
-            if(this.players.player.size() == 1)
-                winners.add(this.players.player.get(0));
+            if(this.dynamicPlayers.players.size() == 1)
+                winners.add(this.dynamicPlayers.players.get(0));
             else{
                 for(Connect connect : this.game.board.getConnects()){
                     if(!winners.contains(connect.getPlayer()))

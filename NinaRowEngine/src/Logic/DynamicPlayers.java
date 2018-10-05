@@ -9,6 +9,7 @@
 package Logic;
 
 import javax.xml.bind.annotation.*;
+import java.util.List;
 
 
 /**
@@ -44,6 +45,8 @@ public class DynamicPlayers {
     @XmlAttribute(name = "game-title", required = true)
     protected String gameTitle;
 
+    protected List<Player> players;
+    private int turnPlayerIndex = 0;
     /**
      * Gets the value of the totalPlayers property.
      * 
@@ -84,4 +87,32 @@ public class DynamicPlayers {
         this.gameTitle = value;
     }
 
+    public void init(){
+        this.turnPlayerIndex = 0;
+        for(Player player : this.players)
+            player.init();
+    }
+
+    public Player getActivePlayer(){
+        return this.players.get(this.turnPlayerIndex);
+    }
+
+    protected void setNextPlayerAsActive(){
+        this.turnPlayerIndex = (this.turnPlayerIndex+1+this.players.size())%this.players.size();
+    }
+
+    protected void setPreviousPlayerAsActive(){
+        this.turnPlayerIndex = (this.turnPlayerIndex-1+this.players.size())%this.players.size();
+    }
+
+    protected void remove(Player player){
+        if(this.players.contains(player)){
+            if(player.equals(getActivePlayer()))
+                setPreviousPlayerAsActive();
+            if(this.players.indexOf(player)<=this.turnPlayerIndex)
+                this.turnPlayerIndex--;
+
+            this.players.remove(player);
+        }
+    }
 }

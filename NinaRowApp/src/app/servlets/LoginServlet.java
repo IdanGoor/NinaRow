@@ -54,8 +54,6 @@ public class LoginServlet extends HttpServlet {
                         //create a new one
                         request.getSession(true).setAttribute(Constants.PLAYER_NAME, playerNameFromParameter);
                         request.getSession(true).setAttribute(Constants.PLAYER_TYPE, playerTypeFromParameter);
-
-                        System.out.println("On login, request URI is: " + request.getRequestURI());
                         response.setStatus(HttpServletResponse.SC_OK);
                     }
                 }

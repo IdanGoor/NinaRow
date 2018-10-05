@@ -13,6 +13,7 @@ export default class Login extends React.Component {
     e.preventDefault();
     console.log(e.target.elements);
     const userName = e.target.elements.userName.value;
+    const playerType = e.target.elements.playerType.value;
     if (userName === ""){
         this.setState(() => ({
             errMessage: "User name is empty, please try another one"
@@ -25,7 +26,11 @@ export default class Login extends React.Component {
     else{
         $.ajax({
             url: "/users/login",
-            data: "playername=" + userName,
+            //data: "playername=" + userName +", playertype=" + playerType,
+            data: {
+                playername: userName,
+                playertype: playerType
+            },
             dataType: 'json'
         });
         // fetch("/users/login", {
@@ -93,6 +98,8 @@ export default class Login extends React.Component {
                     Username:{" "}
                 </label>
                 <input name="userName" />
+                <input type={"radio"} value={"Human"} name={"playerType"} checked/>
+                <input type={"radio"} value={"Computer"} name={"playerType"}/>
                 <input type={"submit"} className={"button-green"} value={"Login"} style={{fontSize:"16px"}}/>
             </form>
 

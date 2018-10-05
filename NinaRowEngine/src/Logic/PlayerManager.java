@@ -12,9 +12,7 @@ public class PlayerManager {
     public PlayerManager() {this.players = new HashSet<>();}
 
     public synchronized void addPlayer(String name, String type){
-        Player player = new Player();
-        player.name = name;
-        player.type = type;
+        Player player = new Player(name, type);
         this.players.add(player);
     }
 
@@ -24,7 +22,7 @@ public class PlayerManager {
 
     public boolean isPlayerExists(String name){
         for(Player player : this.players)
-            if(player.name.equals(name))
+            if(player.getName().equals(name))
                 return true;
         return false;
     }

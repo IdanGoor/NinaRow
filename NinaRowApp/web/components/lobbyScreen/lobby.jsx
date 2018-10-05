@@ -20,10 +20,10 @@ export default class Lobby extends React.Component {
           this.UPDATE_INTERVAL
       );
 
-      // this.fetchGamesInterval = setInterval(
-      //     this.getGames.bind(this),
-      //     this.UPDATE_INTERVAL
-      // );
+      this.fetchGamesInterval = setInterval(
+          this.getGames.bind(this),
+          this.UPDATE_INTERVAL
+      );
   }
 
   componentWillUnmount() {
@@ -37,24 +37,22 @@ export default class Lobby extends React.Component {
           url: "/playerlist",
           timeout: 4000,
           success: function(r){
+              //TODO: add error message
               this.setState(() => ({ players: r }));
           }.bind(this)
       });
   }
 
   getGames() {
-    return fetch("/games/allGames", { method: "GET", credentials: "include" })
-      .then(response => {
-        if (!response.ok) {
-          throw response;
-        }
-        return response.json();
-      })
-      .then(data => {
-        this.setState(() => ({ games: data }));
-      })
-      .catch(err => {
-        throw err;
+      console.log(this.state.games);
+      $.ajax({
+          method:'GET',
+          url: "/gamelist",
+          timeout: 4000,
+          success: function(r){
+              //TODO: add error message
+              this.setState(() => ({ games: r }));
+          }.bind(this)
       });
   }
 

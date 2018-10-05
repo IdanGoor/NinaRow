@@ -51,8 +51,6 @@ public class Board implements Serializable {
     private boolean isPopout = false;
     private static final Disc EMPTY = null;
 
-    protected BoardOperation popOut = new PopoutOperation(this);
-    protected BoardOperation pushIn = new PushinOperation(this);
 
     /**
      * Gets the value of the rows property.
@@ -109,10 +107,6 @@ public class Board implements Serializable {
     public List<Connect> getConnects(){
         return this.connects;
     }
-
-    public BoardOperation getPopOutOperation(){ return this.popOut; }
-
-    public BoardOperation getPushInOperation() { return this.pushIn; }
 
     public void setCircular(boolean isCircular){
         this.isCircular = isCircular;

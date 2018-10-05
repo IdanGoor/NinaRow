@@ -73,6 +73,7 @@ public class GameDescriptor {
     private Random random = new Random();
     private Status status = Status.INACTIVE;
     private boolean isEnded = false;
+    private Player creator;
 
     /**
      * Gets the value of the gameType property.
@@ -146,6 +147,10 @@ public class GameDescriptor {
         return this.history.getMoves();
     }
 
+    public Player getCreator(){return this.creator;}
+
+    public void setCreator(Player creator){this.creator=creator;}
+
     public boolean isActive(){
         return this.status == Status.ACTIVE;
     }
@@ -190,13 +195,13 @@ public class GameDescriptor {
             sleeper.setOnSucceeded(event ->
             {
                 if(!this.isEnded){
-                    if(this.game.board.isFull() && this.game.isPopoutMode() && this.game.board.popOut.hasOption(activePlayer)){
-                        int column = this.game.board.popOut.getRandomOption(activePlayer);
-                        executePlayerMove(column, this.game.board.popOut);
+                    if(this.game.board.isFull() && this.game.isPopoutMode() && this.game.popOut.hasOption(activePlayer)){
+                        int column = this.game.popOut.getRandomOption(activePlayer);
+                        executePlayerMove(column, this.game.popOut);
                     }
                     else if(!this.game.board.isFull()){
-                        int column = this.game.board.pushIn.getRandomOption(activePlayer);
-                        executePlayerMove(column, this.game.board.pushIn);
+                        int column = this.game.pushIn.getRandomOption(activePlayer);
+                        executePlayerMove(column, this.game.pushIn);
                     }
                 }
             });
@@ -211,7 +216,7 @@ public class GameDescriptor {
         Player activePlayer = this.dynamicPlayers.getActivePlayer();
 
         if(this.game.board.isConnectExists()
-                || (this.game.isPopoutMode() && this.game.board.isFull() && !this.game.board.popOut.hasOption(activePlayer))
+                || (this.game.isPopoutMode() && this.game.board.isFull() && !this.game.popOut.hasOption(activePlayer))
                 || (!this.game.isPopoutMode() && this.game.board.isFull())
                 || (this.dynamicPlayers.players.size() == 1))
             endGame();

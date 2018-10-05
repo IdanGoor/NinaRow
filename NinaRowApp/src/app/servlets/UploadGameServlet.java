@@ -1,7 +1,14 @@
 package app.servlets;
 
+import Logic.GameManager;
+import Logic.Player;
+import Logic.PlayerManager;
 import Logic.utils.GameSerializer;
 import Logic.GameDescriptor;
+import app.utils.ServletUtils;
+import app.utils.SessionUtils;
+import com.google.gson.Gson;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -29,8 +36,18 @@ public class UploadGameServlet extends HttpServlet {
         Collection<Part> parts = request.getParts();
         for (Part part : parts) {
             try{
-                GameDescriptor gd = GameSerializer.serializeStream(part.getInputStream());
-                //TODO: add the game to the games list
+                GameDescriptor game = GameSerializer.serializeStream(part.getInputStream());
+                GameManager gameManager = ServletUtils.getGameManager(getServletContext());
+                if(gameManager.isGameExists(game.getDynamicPlayers().getGameTitle())){
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    out.println("Game title is already exists");
+                }
+                else{
+                    String usernameFromSession = SessionUtils.getUsername(request);
+                    PlayerManager playerManager = ServletUtils.getPlayerManager(getServletContext());
+                    Player creator = playerManager.getPlayer(usernameFromSession);
+                    gameManager.addGame(creator, game);
+                }
             } catch(Exception e){
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 out.println(e.getMessage());

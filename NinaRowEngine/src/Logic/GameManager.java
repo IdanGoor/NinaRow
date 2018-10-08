@@ -24,4 +24,12 @@ public class GameManager {
                 return true;
         return false;
     }
+
+    public GameDescriptor getGame(String title){
+        GameDescriptor selectedGame = null;
+        for(GameDescriptor game : this.games)
+            if(game.dynamicPlayers.gameTitle.equals(title))
+                selectedGame = game;
+        return selectedGame;
+    }
 }

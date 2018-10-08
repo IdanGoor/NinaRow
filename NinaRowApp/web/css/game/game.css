@@ -1,0 +1,53 @@
+/*@media screen and (max-width: 1100px){*/
+    /*.gameroom-layout {*/
+        /*grid-template-rows: 80% 20%;*/
+        /*grid-template-areas:*/
+                /*"boardCol"*/
+                /*"infoCol";*/
+    /*}*/
+/*}*/
+
+/*@media screen and (min-width: 1100px){*/
+    /*.gameroom-layout {*/
+        /*grid-template-columns: 20% 80%;*/
+        /*grid-template-areas:"infoCol boardCol";*/
+    /*}*/
+/*}*/
+
+.game-layout{
+    height: 100%;
+    width: 100%;
+    display: grid;
+
+    grid-template-columns: 20% 80%;
+    grid-template-rows: 80% 20%;
+    grid-template-areas:
+            "gameInfo gameBoard"
+            "gameInfo gameChat";
+}
+
+#game-info{
+    grid-area: gameInfo;
+}
+
+#game-board{
+    grid-area: gameBoard;
+}
+
+#game-chat{
+    grid-area: gameChat;
+}
+
+.player-box{
+    padding: 5px 5px;
+    font-size: 15px;
+    color: #fff;
+    border-radius: 15px;
+    text-align: center;
+    margin: 2px;
+    background-color: #888888;
+    display: grid;
+    grid-template-columns: 55% 35% 10%;
+}
+
+

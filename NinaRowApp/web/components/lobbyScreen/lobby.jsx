@@ -3,6 +3,7 @@ import "../../css/lobby/lobby.css";
 import PlayerInfo from "./playerInfo.jsx";
 import GameTable from "./gameTable.jsx";
 import PlayerTable from "./playerTable.jsx";
+import Game from "../gameScreen/game.jsx";
 
 export default class Lobby extends React.Component {
   constructor(props) {
@@ -65,13 +66,14 @@ export default class Lobby extends React.Component {
   }
 
   render() {
-    return (
+    return (!this.state.isJoinedGame ?
         <div className={"lobby-layout"}>
             <PlayerTable players={this.state.players}/>
             <GameTable user={this.props.playerName} games={this.state.games}
                        joinGame={this.joinGame.bind(this)}/>
             <PlayerInfo user={this.props.playerName} logout={this.props.logout}/>
         </div>
+            : <Game user={this.props.playerName} leaveGame={this.leaveGame.bind(this)}/>
     );
   }
 }

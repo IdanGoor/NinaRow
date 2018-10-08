@@ -54,11 +54,11 @@ export default class PlayerInfo extends React.Component {
 
   render() {
     return (
-        <div className={"lobby-column"} id={"user-info"}>
-            <div className={"lobby-column-headline"}>
+        <div className={"page-column"} id={"user-info"}>
+            <div className={"page-column-headline"}>
                 Info
             </div>
-            <div className={"lobby-column-content"}>
+            <div className={"page-column-content"}>
                 <div className={"user-info-content"}>
                     <p><b>Name: </b>{this.playerName}</p>
                     <form id={"uploadForm"} onSubmit={this.handleUpload.bind(this)} encType={"multipart/form-data"}>

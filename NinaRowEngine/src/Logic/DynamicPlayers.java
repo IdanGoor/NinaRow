@@ -47,6 +47,8 @@ public class DynamicPlayers {
     protected String gameTitle;
 
     protected List<Player> players = new LinkedList<>();
+    protected List<Player> visitors = new LinkedList<>();
+
     private int turnPlayerIndex = 0;
     /**
      * Gets the value of the totalPlayers property.
@@ -115,5 +117,22 @@ public class DynamicPlayers {
 
             this.players.remove(player);
         }
+    }
+
+    public void addPlayer(Player player){
+        this.players.add(player);
+    }
+
+    public void addVisitor(Player visitor){
+        this.visitors.add(visitor);
+    }
+
+    public boolean isGameFull(){
+        return this.players.size() >= this.totalPlayers;
+    }
+
+    public void leaveGame(Player player){
+        //TODO: if the player is a player then remove its discs
+        //TODO: if the player is a visitor then just delete him from visitors
     }
 }

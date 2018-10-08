@@ -41,11 +41,11 @@ export default class GameTable extends React.Component {
 
   render() {
     return (
-        <div className={"lobby-column"} id={"games-table"}>
-            <div className={"lobby-column-headline"}>
+        <div className={"page-column"} id={"games-table"}>
+            <div className={"page-column-headline"}>
                 Games
             </div>
-            <div className={"lobby-column-content lobby-scrollbar"}>
+            <div className={"page-column-content lobby-scrollbar"}>
                 {this.renderGameObjects()}
             </div>
         </div>

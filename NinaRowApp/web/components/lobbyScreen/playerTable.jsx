@@ -28,11 +28,11 @@ export default class PlayerTable extends React.Component {
 
   render() {
     return(
-        <div className={"lobby-column"} id={"users-table"}>
-            <div className={"lobby-column-headline"}>
+        <div className={"page-column"} id={"users-table"}>
+            <div className={"page-column-headline"}>
                 Users
             </div>
-            <div className={"lobby-column-content lobby-scrollbar"}>
+            <div className={"page-column-content lobby-scrollbar"}>
                 {this.renderPlayerTable()}
             </div>
         </div>);

@@ -267,4 +267,8 @@ public class GameDescriptor {
         return winners;
     }
 
+    public boolean isPlayerInGame(Player player){
+        return this.dynamicPlayers.players.contains(player) || this.dynamicPlayers.visitors.contains(player);
+    }
+
 }

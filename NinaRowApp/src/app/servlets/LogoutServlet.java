@@ -1,5 +1,8 @@
 package app.servlets;
 
+import Logic.GameDescriptor;
+import Logic.GameManager;
+import Logic.Player;
 import Logic.PlayerManager;
 import app.utils.ServletUtils;
 import app.utils.SessionUtils;
@@ -33,13 +36,20 @@ public class LogoutServlet extends HttpServlet {
             response.getWriter().println("Player is not logged in");
         } else {
             synchronized (this) {
-                if (playerManager.isPlayerExists(usernameFromSession)) {
-                    //TODO: if player is during play then cannot delete
-                    playerManager.removePlayer(playerManager.getPlayer(usernameFromSession));
-                    SessionUtils.clearSession(request);
-                } else {
+                if (!playerManager.isPlayerExists(usernameFromSession)) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     response.getWriter().println("Player does not exists");
+                } else {
+                    Player player = playerManager.getPlayer(usernameFromSession);
+                    String gameTitleFromSession = SessionUtils.getGameTitle(request);
+                    if(gameTitleFromSession != null){
+                        GameManager gameManager = ServletUtils.getGameManager(getServletContext());
+                        GameDescriptor game = gameManager.getGame(gameTitleFromSession);
+                        game.removePlayer(player);
+                    }
+
+                    playerManager.removePlayer(player);
+                    SessionUtils.clearSession(request);
                 }
             }
         }

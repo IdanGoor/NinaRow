@@ -47,6 +47,7 @@ public class UploadGameServlet extends HttpServlet {
                     PlayerManager playerManager = ServletUtils.getPlayerManager(getServletContext());
                     Player creator = playerManager.getPlayer(usernameFromSession);
                     gameManager.addGame(creator, game);
+                    game.init();
                 }
             } catch(Exception e){
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

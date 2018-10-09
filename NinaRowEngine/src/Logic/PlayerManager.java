@@ -16,7 +16,9 @@ public class PlayerManager {
         this.players.add(player);
     }
 
-    public synchronized void removePlayer(Player player){this.players.remove(player);}
+    public synchronized void removePlayer(Player player){
+        this.players.remove(player);
+    }
 
     public synchronized Set<Player> getPlayers(){return Collections.unmodifiableSet(this.players);}
 

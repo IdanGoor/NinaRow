@@ -174,6 +174,12 @@ public class GameDescriptor {
 
         if(this.dynamicPlayers.gameTitle.isEmpty())
             throw new Exception("Game should have a title");
+
+        this.turnAmount = 0;
+        this.dynamicPlayers.init();
+        this.history.init();
+        this.game.init();
+        this.isEnded = false;
     }
 
     public void executePlayerMove(int col, BoardOperation operation){
@@ -213,24 +219,27 @@ public class GameDescriptor {
 
     public void swapPlayers(){
         this.dynamicPlayers.setNextPlayerAsActive();
-        Player activePlayer = this.dynamicPlayers.getActivePlayer();
 
-        if(this.game.board.isConnectExists()
-                || (this.game.isPopoutMode() && this.game.board.isFull() && !this.game.popOut.hasOption(activePlayer))
-                || (!this.game.isPopoutMode() && this.game.board.isFull())
-                || (this.dynamicPlayers.players.size() == 1))
-            endGame();
-        else
-            this.play();
+        if(this.status.equals(Status.ACTIVE)){
+            Player activePlayer = this.dynamicPlayers.getActivePlayer();
+
+            if(this.game.board.isConnectExists()
+                    || (this.game.isPopoutMode() && this.game.board.isFull() && !this.game.popOut.hasOption(activePlayer))
+                    || (!this.game.isPopoutMode() && this.game.board.isFull())
+                    || (this.dynamicPlayers.players.size() == 1))
+                endGame();
+            else
+                this.play();
+        }
     }
 
 
     public void startGame(){
-        this.turnAmount = 0;
-        this.dynamicPlayers.init();
-        this.history.init();
-        this.game.init();
-        this.isEnded = false;
+//        this.turnAmount = 0;
+//        this.dynamicPlayers.init();
+//        this.history.init();
+//        this.game.init();
+//        this.isEnded = false;
         this.status = Status.ACTIVE;
 
         play();

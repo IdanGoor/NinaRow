@@ -1,6 +1,10 @@
 package app.servlets;
 
+import Logic.GameDescriptor;
+import Logic.GameManager;
+import Logic.Player;
 import Logic.PlayerManager;
+import app.constants.Constants;
 import app.utils.ServletUtils;
 import app.utils.SessionUtils;
 
@@ -25,7 +29,32 @@ public class LeaveGameServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        String usernameFromSession = SessionUtils.getUsername(request);
+        PlayerManager playerManager = ServletUtils.getPlayerManager(getServletContext());
+        if (usernameFromSession == null) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println("Player is not logged in");
+        } else {
+            synchronized (this) {
+                if (!playerManager.isPlayerExists(usernameFromSession)) {
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    response.getWriter().println("Player does not exists");
+                } else {
+                    Player player = playerManager.getPlayer(usernameFromSession);
+                    String gameTitleFromSession = SessionUtils.getGameTitle(request);
+                    if(gameTitleFromSession == null){
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        response.getWriter().println("Player didn't join any game");
+                    }
 
+                    request.getSession(false).removeAttribute(Constants.GAME_TITLE);
+                    GameManager gameManager = ServletUtils.getGameManager(getServletContext());
+                    GameDescriptor game = gameManager.getGame(gameTitleFromSession);
+                    game.removePlayer(player);
+                }
+            }
+        }
     }
 
 

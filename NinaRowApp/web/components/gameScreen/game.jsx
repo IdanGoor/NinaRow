@@ -60,24 +60,6 @@ export default class Game extends React.Component {
           });
   }
 
-  leaveGame() {
-      $("#errorMessage").text("");
-      $.ajax({
-          method:'POST',
-          data: "gameTitle=" + this.props.game.dynamicPlayers.gameTitle,
-          url: "/leaveGame",
-          timeout: 4000,
-          error: function(jqXHR, ajaxSetting, error) {
-              console.error("Failed to leave game");
-              $("#errorMessage").text("Error: " + jqXHR.responseText);
-          },
-          success: function(){
-              this.props.joinGame();
-          }.bind(this)
-      });
-  }
-
-
   renderBoard(){
       //TODO: at the begining it shows only the board with squares and numbers
       //TODO: when game starts it show all the pushIn and popOut button (if needed)

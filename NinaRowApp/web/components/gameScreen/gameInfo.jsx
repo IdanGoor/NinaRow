@@ -9,13 +9,29 @@ export default class GameInfo extends React.Component {
 
   }
 
+    leaveGameHandler() {
+        $("#errorMessage").text("");
+        $.ajax({
+            method:'GET',
+            url: "/leaveGame",
+            timeout: 4000,
+            error: function(jqXHR, ajaxSetting, error) {
+                console.error("Failed to leave game");
+                $("#errorMessage").text("Error: " + jqXHR.responseText);
+            },
+            success: function(){
+                this.props.leaveGame();
+            }.bind(this)
+        });
+    }
+
     renderLeaveButton(){
         // TODO: if the player is pc before game started then he cant leave
         return(
             <button
                 className={`button-red`}
                 style={{fontSize: "14px"}}
-                onClick={this.props.leaveGame}>
+                onClick={this.leaveGameHandler.bind(this)}>
                 Leave Game
             </button>
         );

@@ -101,11 +101,17 @@ public class DynamicPlayers {
     }
 
     protected void setNextPlayerAsActive(){
-        this.turnPlayerIndex = (this.turnPlayerIndex+1+this.players.size())%this.players.size();
+        if(this.players.isEmpty())
+            this.turnPlayerIndex = 0;
+        else
+            this.turnPlayerIndex = (this.turnPlayerIndex+1+this.players.size())%this.players.size();
     }
 
     protected void setPreviousPlayerAsActive(){
-        this.turnPlayerIndex = (this.turnPlayerIndex-1+this.players.size())%this.players.size();
+        if(this.players.isEmpty())
+            this.turnPlayerIndex = 0;
+        else
+            this.turnPlayerIndex = (this.turnPlayerIndex-1+this.players.size())%this.players.size();
     }
 
     protected void remove(Player player){
@@ -116,6 +122,10 @@ public class DynamicPlayers {
                 this.turnPlayerIndex--;
 
             this.players.remove(player);
+        }
+
+        if(this.visitors.contains(player)){
+            this.visitors.remove(player);
         }
     }
 }

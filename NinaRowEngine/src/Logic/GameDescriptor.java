@@ -224,16 +224,6 @@ public class GameDescriptor {
             this.play();
     }
 
-    public void removePlayer(Player player){
-        boolean wasActive = player.equals(this.dynamicPlayers.getActivePlayer());
-        if(this.dynamicPlayers.players.contains(player)){
-            this.dynamicPlayers.remove(player);
-            this.game.board.removeAllPlayerDiscs(player);
-            this.game.board.checkConnectFullBoard();
-            if(wasActive)
-                swapPlayers();
-        }
-    }
 
     public void startGame(){
         this.turnAmount = 0;
@@ -270,5 +260,38 @@ public class GameDescriptor {
     public boolean isPlayerInGame(Player player){
         return this.dynamicPlayers.players.contains(player) || this.dynamicPlayers.visitors.contains(player);
     }
+
+    public void addPlayer(Player player){
+        if(!this.isGameFull()){
+            this.dynamicPlayers.players.add(player);
+            if(this.dynamicPlayers.players.size() == this.dynamicPlayers.totalPlayers && this.status.equals(Status.INACTIVE)){
+                startGame();
+            }
+        }
+    }
+
+    public void addVisitor(Player visitor){
+        this.dynamicPlayers.visitors.add(visitor);
+    }
+
+    public void removePlayer(Player player){
+        boolean wasActive = player.equals(this.dynamicPlayers.getActivePlayer());
+        if(this.dynamicPlayers.players.contains(player)){
+            this.dynamicPlayers.remove(player);
+            this.game.board.removeAllPlayerDiscs(player);
+            this.game.board.checkConnectFullBoard();
+            if(wasActive)
+                swapPlayers();
+        }
+
+        if(this.dynamicPlayers.visitors.contains(player)){
+            this.dynamicPlayers.visitors.remove(player);
+        }
+    }
+
+    public boolean isGameFull(){
+        return this.dynamicPlayers.players.size() >= this.dynamicPlayers.totalPlayers;
+    }
+
 
 }

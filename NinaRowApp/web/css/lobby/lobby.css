@@ -57,41 +57,6 @@
   grid-area: userInfo;
 }
 
-.lobby-scrollbar{
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  overflow-wrap: break-word;
-  text-align: left;
-  font-family: sans-serif;
-
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-  align-content: flex-start;
-}
-
-/* width */
-.lobby-scrollbar::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-.lobby-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-/* Handle */
-.lobby-scrollbar::-webkit-scrollbar-thumb {
-  background: #888;
-}
-
-/* Handle on hover */
-.lobby-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
 .lobby-no-games-message{
   margin: auto;
   padding: 50px;

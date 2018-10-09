@@ -1,0 +1,30 @@
+.board-object{
+    width: 2vw;
+}
+
+.board-column{
+    display: flex;
+    flex-direction: column;
+}
+
+.board{
+    display: flex;
+    flex-direction: row;
+}
+
+/*.pushIn-arrow{*/
+
+    /*background-image: url(/resources/arrows/arrow_green.png);*/
+/*}*/
+
+/*.pushIn-arrow:hover{*/
+    /*background-image: url("/resources/arrows/arrow_green_hover.png");*/
+/*}*/
+
+/*.popOut-arrow{*/
+     /*background-image: url("/resources/arrows/arrow_red.png");*/
+/*}*/
+
+/*.popOut-arrow:hover{*/
+    /*background-image: url("/resources/arrows/arrow_red_hover.png");*/
+/*}*/

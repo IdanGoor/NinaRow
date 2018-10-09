@@ -1,20 +1,30 @@
 import React from "react";
 import "../../css/global.css";
 import "../../css/game/game.css";
+import Board from "./board.jsx";
 import GameInfo from "./gameInfo.jsx";
+const _ = require("lodash");
+
+function importAll(r) {
+    let images = {};
+    r.keys().map((key) => {images[(key.replace('./', '')).replace('.png', '')]=r(key)});
+    return images;
+}
+const colors = importAll(require.context("../../resources/colors/", false, /\.png$/));
 
 
 export default class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.UPDATE_INTERVAL = 500;
+    this.UPDATE_INTERVAL = 1000;
     this.isGameEnded = false;
+    this.isGameStarted = false;
     this.state = {
         game: "",
         boardState: ""
     };
 
-    //this.fetchGameInterval = setInterval(this.getGame.bind(this), this.UPDATE_INTERVAL);
+    this.fetchGameInterval = setInterval(this.getGame.bind(this), this.UPDATE_INTERVAL);
   }
 
   componentWillUnmount() {
@@ -23,25 +33,15 @@ export default class Game extends React.Component {
   }
 
   getGame() {
-    return fetch("/games/getGame", { method: "GET", credentials: "include" })
-        .then(response => {
-            if (!response.ok) {
-                throw response;
-            }
-            return response.json();
-        })
-        .then(game => {
-            this.setState(() => ({ game: game }));
-        })
-        .then(() => {
-            if (this.state.game.status === gameUtils.GAME_CONSTS.IN_PROGRESS && this.fetchBoardStateInterval===undefined){
-                this.props.updateViewManager();
-                this.fetchBoardStateInterval = setInterval(this.getBoardState.bind(this), this.UPDATE_INTERVAL);
-            }
-        })
-        .catch(err => {
-            throw err;
-        });
+      $.ajax({
+          method:'GET',
+          url: "/currentGame",
+          timeout: 4000,
+          success: function(game){
+              //TODO: add error message
+              this.setState(() => ({ game: game }));
+          }.bind(this)
+      });
   }
 
   getBoardState() {
@@ -84,9 +84,14 @@ export default class Game extends React.Component {
   }
 
   render() {
+      if(this.state.game.status==="ACTIVE" && !this.isGameStarted){
+          this.isGameStarted = true;
+      }
+
     return (
         <div className={"game-layout"}>
             <GameInfo user={this.props.user} leaveGame={this.props.leaveGame}/>
+            <Board/>
         </div>
     );
   }

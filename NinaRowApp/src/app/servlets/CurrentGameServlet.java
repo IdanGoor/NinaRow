@@ -2,11 +2,10 @@ package app.servlets;
 
 import Logic.GameDescriptor;
 import Logic.GameManager;
-import Logic.Player;
 import Logic.PlayerManager;
-import app.constants.Constants;
 import app.utils.ServletUtils;
 import app.utils.SessionUtils;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,9 +13,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Set;
 
-@WebServlet(name = "JoinPlayerServlet", urlPatterns = {"/joinPlayer"})
-public class JoinPlayerServlet extends HttpServlet {
+@WebServlet(name = "CurrentGameServlet", urlPatterns = {"/currentGame"})
+public class CurrentGameServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,41 +30,25 @@ public class JoinPlayerServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String usernameFromSession = SessionUtils.getUsername(request);
-        GameManager gameManager = ServletUtils.getGameManager(getServletContext());
-        if (usernameFromSession == null) {
+        //returning JSON objects, not HTML
+        response.setContentType("application/json");
+        String gameTitleFromSession = SessionUtils.getGameTitle(request);
+        if (gameTitleFromSession == null) {
+            response.getWriter().println("Player didn't join any game");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().println("Player is not logged in");
         }
         else{
-            String gameTitleFromParameter = request.getParameter(Constants.GAME_TITLE);
-            synchronized (this) {
-                if (!gameManager.isGameExists(gameTitleFromParameter)) {
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    response.getWriter().println("Game does not exist");
-                } else {
-                    GameDescriptor game = gameManager.getGame(gameTitleFromParameter);
-                    if(game.isGameFull()){
-                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                        response.getWriter().println("Game has reached its total players amount");
-                    }
-                    else{
-                        PlayerManager playerManager = ServletUtils.getPlayerManager(getServletContext());
-                        Player player = playerManager.getPlayer(usernameFromSession);
-                        if(game.isPlayerInGame(player)){
-                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                            response.getWriter().println("Player is already in the game");
-                        }
-                        else{
-                            game.addPlayer(player);
-                            request.getSession(true).setAttribute(Constants.GAME_TITLE, gameTitleFromParameter);
-                            response.setStatus(HttpServletResponse.SC_OK);
-                        }
-                    }
-                }
+            try (PrintWriter out = response.getWriter()) {
+                Gson gson = new Gson();
+                GameManager gameManager = ServletUtils.getGameManager(getServletContext());
+                GameDescriptor game = gameManager.getGame(gameTitleFromSession);
+                String json = gson.toJson(game);
+                out.println(json);
+                out.flush();
             }
         }
     }
+
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     /**

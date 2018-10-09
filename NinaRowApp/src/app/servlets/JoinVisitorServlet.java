@@ -50,7 +50,7 @@ public class JoinVisitorServlet extends HttpServlet {
                         response.getWriter().println("Player is already in the game");
                     }
                     else{
-                        game.getDynamicPlayers().addVisitor(player);
+                        game.addVisitor(player);
                         request.getSession(true).setAttribute(Constants.GAME_TITLE, gameTitleFromParameter);
                         response.setStatus(HttpServletResponse.SC_OK);
                     }

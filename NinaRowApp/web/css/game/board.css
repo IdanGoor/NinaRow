@@ -12,6 +12,26 @@
     flex-direction: row;
 }
 
+.board-with-buttons{
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons-row{
+    margin-left: auto;
+    margin-right: auto;
+    padding-right: 10px;
+}
+
+.number-square{
+    min-width: 2vw;
+    min-height: 2vw;
+    text-align: center;
+    font-weight: 400;
+    font-size: 1vw;
+    line-height: 2;
+}
+
 /*.pushIn-arrow{*/
 
     /*background-image: url(/resources/arrows/arrow_green.png);*/

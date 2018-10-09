@@ -31,23 +31,35 @@ export default class Board extends React.Component {
       //TODO: when game starts it show all the pushIn and popOut button (if needed)
   }
 
-    showPushInColumn(column){
-        $("#column_"+`${column}`).css("background-color", "lightgreen");
-        $("#pushIn_"+`${column}`).attr("src", ArrowGreenHover);
-    }
+  showPushInColumn(column){
+      $("#column_"+`${column}`).css("background-color", "lightgreen");
+  }
 
     unshowPushInColumn(column){
         $("#column_"+`${column}`).css("background-color", "");
+    }
+
+  clickPushIn(column){
+        $("#pushIn_"+`${column}`).attr("src", ArrowGreenHover);
+  }
+
+    releasePushIn(column){
         $("#pushIn_"+`${column}`).attr("src", ArrowGreen);
     }
 
     showPopOutColumn(column){
         $("#column_"+`${column}`).css("background-color", "red");
-        $("#popOut_"+`${column}`).attr("src", ArrowRedHover);
     }
 
     unshowPopOutColumn(column){
         $("#column_"+`${column}`).css("background-color", "");
+    }
+
+    clickPopOut(column){
+        $("#popOut_"+`${column}`).attr("src", ArrowRedHover);
+    }
+
+    releasePopOut(column){
         $("#popOut_"+`${column}`).attr("src", ArrowRed);
     }
 
@@ -58,8 +70,11 @@ export default class Board extends React.Component {
         for(let i=0;i<30;i++){
             buttons.push(
                 <img id={"pushIn_"+i} className={"board-object"} src={ArrowGreen}
-                              onMouseOver={this.showPushInColumn.bind(this, i)}
-                              onMouseLeave={this.unshowPushInColumn.bind(this, i)}/>
+                     onMouseOver={this.showPushInColumn.bind(this, i)}
+                     onMouseLeave={this.unshowPushInColumn.bind(this, i)}
+                     onMouseDown={this.clickPushIn.bind(this,i)}
+                     onMouseUp={this.releasePushIn.bind(this,i)}
+                />
             );
         }
 
@@ -74,7 +89,10 @@ export default class Board extends React.Component {
             buttons.push(
                 <img id={"popOut_"+i} className={"board-object"} src={ArrowRed}
                      onMouseOver={this.showPopOutColumn.bind(this, i)}
-                     onMouseLeave={this.unshowPopOutColumn.bind(this, i)}/>
+                     onMouseLeave={this.unshowPopOutColumn.bind(this, i)}
+                     onMouseDown={this.clickPopOut.bind(this,i)}
+                     onMouseUp={this.releasePopOut.bind(this,i)}
+                />
             );
         }
 

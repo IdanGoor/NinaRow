@@ -5,6 +5,7 @@
 .board-column{
     display: flex;
     flex-direction: column;
+    height: fit-content;
 }
 
 .board{

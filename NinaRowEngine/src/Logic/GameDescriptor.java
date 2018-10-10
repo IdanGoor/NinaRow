@@ -151,6 +151,8 @@ public class GameDescriptor {
 
     public void setCreator(Player creator){this.creator=creator;}
 
+    public String getStatus(){ return this.status.toString(); }
+
     public boolean isActive(){
         return this.status == Status.ACTIVE;
     }

@@ -13,18 +13,33 @@ export default class Board extends React.Component {
     super(props);
     this.UPDATE_INTERVAL = 1000;
 
-    this.state = {
-        game: "",
-        boardState: ""
+    this.state={
+        board: ""
     };
 
-    //this.fetchGameInterval = setInterval(this.getGame.bind(this), this.UPDATE_INTERVAL);
+    this.getBoard();
+    this.fetchBoardInterval = setInterval(this.getBoard.bind(this), this.UPDATE_INTERVAL);
   }
 
   componentWillUnmount() {
-    clearInterval(this.fetchBoardStateInterval);
-    clearInterval(this.fetchGameInterval);
+    clearInterval(this.fetchBoardInterval);
   }
+
+    getBoard() {
+        $.ajax({
+            method:'GET',
+            url: "/board",
+            timeout: 4000,
+            success: function(board){
+                //TODO: add error message
+                if(this.state.board==="")
+                    this.setState(() => ({ board: board }));
+                else{
+                    //TODO: only take last updates of the board and then setState
+                }
+            }.bind(this)
+        });
+    }
 
   renderBoard(){
       //TODO: at the begining it shows only the board with squares and numbers
@@ -67,7 +82,7 @@ export default class Board extends React.Component {
         let buttons = [];
 
         buttons.push(<img className={"board-object"}/>);
-        for(let i=0;i<30;i++){
+        for(let i=0;i<this.state.board.columns;i++){
             buttons.push(
                 <img id={"pushIn_"+i} className={"board-object"} src={ArrowGreen}
                      onMouseOver={this.showPushInColumn.bind(this, i)}
@@ -85,7 +100,7 @@ export default class Board extends React.Component {
         let buttons = [];
 
         buttons.push(<img className={"board-object"}/>);
-        for(let i=0;i<30;i++){
+        for(let i=0;i<this.state.board.columns;i++){
             buttons.push(
                 <img id={"popOut_"+i} className={"board-object"} src={ArrowRed}
                      onMouseOver={this.showPopOutColumn.bind(this, i)}
@@ -101,8 +116,8 @@ export default class Board extends React.Component {
 
     renderColumns(){
         let columns = [];
-        for(let i=0;i<30;i++){
-            columns.push(<BoardColumn key={"column_"+i} column={i}/>);
+        for(let i=0;i<this.state.board.columns;i++){
+            columns.push(<BoardColumn key={"column_"+i} column={this.state.board.discsColumns[i]}/>);
         }
 
         return columns;
@@ -112,7 +127,7 @@ export default class Board extends React.Component {
       let numbers = [];
 
       numbers.push(<div className={"number-square"}/>);
-      for(let i=49; i>=0;i--){
+      for(let i=this.state.board.rows-1; i>=0;i--){
           numbers.push(<div className={"number-square"}>{i+1}</div>);
       }
 
@@ -124,10 +139,6 @@ export default class Board extends React.Component {
     }
 
   render() {
-      if(this.state.game.status==="ACTIVE" && !this.isGameStarted){
-          this.isGameStarted = true;
-      }
-
     return (
         <div className={"board-with-buttons"}>
             <div className={"buttons-row"}>

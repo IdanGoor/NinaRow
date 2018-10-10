@@ -6,8 +6,29 @@ import PlayerBox from "./playerBox.jsx";
 export default class GameInfo extends React.Component {
   constructor(props) {
     super(props);
+    this.UPDATE_INTERVAL = 1000;
+    this.state = {
+        gameInfo: ""
+    };
 
+    this.fetchGameInterval = setInterval(this.getGameInfo.bind(this), this.UPDATE_INTERVAL);
   }
+
+  componentWillUnmount(){
+      clearInterval(this.fetchGameInterval);
+  }
+
+    getGameInfo() {
+        $.ajax({
+            method:'GET',
+            url: "/gameInfo",
+            timeout: 4000,
+            success: function(gameInfo){
+                //TODO: add error message
+                this.setState(() => ({ gameInfo: gameInfo }));
+            }.bind(this)
+        });
+    }
 
     leaveGameHandler() {
         $("#errorMessage").text("");
@@ -38,7 +59,23 @@ export default class GameInfo extends React.Component {
     }
 
     renderPlayers(){
+      let players = this.state.gameInfo.players;
+        let playerObjects = [];
 
+        for (let playerIndex in players){
+            if (players.hasOwnProperty(playerIndex)) {
+                let player = players[playerIndex];
+                playerObjects.push(
+                    <PlayerBox
+                        key={"player_object_"+player.name}
+                        name={player.name}
+                        type={player.type}
+                    />
+                );
+            }
+        }
+
+        return playerObjects;
     }
 
     renderVisitors(){
@@ -46,33 +83,33 @@ export default class GameInfo extends React.Component {
     }
 
   render() {
+
     return (
+        this.state.gameInfo !== "" ?
         <div className={"page-column"} id={"game-info"}>
-            <div className={"page-column-headline"}>
-            Info
-        </div>
+            <div className={"page-column-headline"}>Info</div>
             <div className={"page-column-content"}>
-                <div>Hello {this.props.user}! </div>
-                <div>Welcome to </div>
+                Hello <b>{this.props.user}</b>! Welcome to {this.state.gameInfo.title}.<br/>
+                Target: {this.state.gameInfo.target}<br/>
+                Variant: {this.state.gameInfo.variant}<br/>
+                Total players: {this.state.gameInfo.totalPlayers}<br/>
+                Status: {this.state.gameInfo.status}<br/>
                 {this.renderLeaveButton()}
             </div>
 
-            <div className={"page-column-headline"}>
-                Players
-            </div>
+            <div className={"page-column-headline"}>Players</div>
             <div className={"page-column-content"}>
                 {this.renderPlayers()}
             </div>
 
-            <div className={"page-column-headline"}>
-                Visitors
-            </div>
+            <div className={"page-column-headline"}>Visitors</div>
             <div className={"page-column-content"}>
                 {this.renderVisitors()}
             </div>
 
             <div id="errorMessage" className="error-message"/>
         </div>
+            : <div/>
     );
   }
 }

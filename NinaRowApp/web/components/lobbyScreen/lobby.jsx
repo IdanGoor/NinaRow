@@ -34,27 +34,29 @@ export default class Lobby extends React.Component {
   }
 
   getPlayers() {
-      $.ajax({
-          method:'GET',
-          url: "/playerlist",
-          timeout: 4000,
-          success: function(r){
-              //TODO: add error message
-              this.setState(() => ({ players: r }));
-          }.bind(this)
-      });
+      if(!this.state.isJoinedGame)
+          $.ajax({
+              method:'GET',
+              url: "/playerlist",
+              timeout: 4000,
+              success: function(r){
+                  //TODO: add error message
+                  this.setState(() => ({ players: r }));
+              }.bind(this)
+          });
   }
 
   getGames() {
-      $.ajax({
-          method:'GET',
-          url: "/gamelist",
-          timeout: 4000,
-          success: function(r){
-              //TODO: add error message
-              this.setState(() => ({ games: r }));
-          }.bind(this)
-      });
+      if(!this.state.isJoinedGame)
+          $.ajax({
+              method:'GET',
+              url: "/gamelist",
+              timeout: 4000,
+              success: function(r){
+                  //TODO: add error message
+                  this.setState(() => ({ games: r }));
+              }.bind(this)
+          });
   }
 
   joinGame(){
@@ -69,11 +71,11 @@ export default class Lobby extends React.Component {
     return (!this.state.isJoinedGame ?
         <div className={"lobby-layout"}>
             <PlayerTable players={this.state.players}/>
-            <GameTable user={this.props.playerName} games={this.state.games}
+            <GameTable user={this.props.user} games={this.state.games}
                        joinGame={this.joinGame.bind(this)}/>
-            <PlayerInfo user={this.props.playerName} logout={this.props.logout}/>
+            <PlayerInfo user={this.props.user} logout={this.props.logout}/>
         </div>
-            : <Game user={this.props.playerName} leaveGame={this.leaveGame.bind(this)}/>
+            : <Game user={this.props.user} leaveGame={this.leaveGame.bind(this)}/>
     );
   }
 }

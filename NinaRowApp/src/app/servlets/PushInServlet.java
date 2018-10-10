@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "LeaveGameServlet", urlPatterns = {"/leaveGame"})
-public class LeaveGameServlet extends HttpServlet {
+@WebServlet(name = "PushInServlet", urlPatterns = {"/pushIn"})
+public class PushInServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,43 +29,45 @@ public class LeaveGameServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         String usernameFromSession = SessionUtils.getUsername(request);
-        PlayerManager playerManager = ServletUtils.getPlayerManager(getServletContext());
+        GameManager gameManager = ServletUtils.getGameManager(getServletContext());
         if (usernameFromSession == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().println("Player is not logged in");
-        } else {
+        }
+        else{
+            String gameTitleFromParameter = request.getParameter(Constants.GAME_TITLE);
             synchronized (this) {
-                if (!playerManager.isPlayerExists(usernameFromSession)) {
+                if (!gameManager.isGameExists(gameTitleFromParameter)) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    response.getWriter().println("Player does not exists");
+                    response.getWriter().println("Game does not exist");
                 } else {
-                    Player player = playerManager.getPlayer(usernameFromSession);
-                    String gameTitleFromSession = SessionUtils.getGameTitle(request);
-                    if(gameTitleFromSession == null){
+                    GameDescriptor game = gameManager.getGame(gameTitleFromParameter);
+                    if(game.isGameFull()){
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                        response.getWriter().println("Player didn't join any game");
+                        response.getWriter().println("Game has reached its total players amount");
+                    }
+                    else if(game.isActive()){
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        response.getWriter().println("Player can't join to a game that's already active");
                     }
                     else{
-                        String playerTypeFromSession = SessionUtils.getUserType(request);
-                        if(playerTypeFromSession.equals("Computer")){
+                        PlayerManager playerManager = ServletUtils.getPlayerManager(getServletContext());
+                        Player player = playerManager.getPlayer(usernameFromSession);
+                        if(game.isPlayerInGame(player)){
                             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                            response.getWriter().println("Computer player cannot leave game");
+                            response.getWriter().println("Player is already in the game");
                         }
                         else{
-                            request.getSession(false).removeAttribute(Constants.GAME_TITLE);
-                            GameManager gameManager = ServletUtils.getGameManager(getServletContext());
-                            GameDescriptor game = gameManager.getGame(gameTitleFromSession);
-                            game.removePlayer(player);
+                            game.addPlayer(player);
+                            request.getSession(true).setAttribute(Constants.GAME_TITLE, gameTitleFromParameter);
+                            response.setStatus(HttpServletResponse.SC_OK);
                         }
                     }
                 }
             }
         }
     }
-
-
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     /**

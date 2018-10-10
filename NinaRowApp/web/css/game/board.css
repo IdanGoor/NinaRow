@@ -16,6 +16,7 @@
 .board-with-buttons{
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 .buttons-row{

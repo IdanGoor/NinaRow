@@ -47,6 +47,10 @@ public class JoinPlayerServlet extends HttpServlet {
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                         response.getWriter().println("Game has reached its total players amount");
                     }
+                    else if(game.isActive()){
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        response.getWriter().println("Player can't join to a game that's already active");
+                    }
                     else{
                         PlayerManager playerManager = ServletUtils.getPlayerManager(getServletContext());
                         Player player = playerManager.getPlayer(usernameFromSession);

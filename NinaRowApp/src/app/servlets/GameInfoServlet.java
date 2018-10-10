@@ -3,6 +3,7 @@ package app.servlets;
 import Logic.GameDescriptor;
 import Logic.GameManager;
 import Logic.PlayerManager;
+import app.utils.GameInfo;
 import app.utils.ServletUtils;
 import app.utils.SessionUtils;
 import com.google.gson.Gson;
@@ -16,8 +17,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Set;
 
-@WebServlet(name = "CurrentGameServlet", urlPatterns = {"/currentGame"})
-public class CurrentGameServlet extends HttpServlet {
+@WebServlet(name = "GameInfoServlet", urlPatterns = {"/gameInfo"})
+public class GameInfoServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,7 +43,7 @@ public class CurrentGameServlet extends HttpServlet {
                 Gson gson = new Gson();
                 GameManager gameManager = ServletUtils.getGameManager(getServletContext());
                 GameDescriptor game = gameManager.getGame(gameTitleFromSession);
-                String json = gson.toJson(game);
+                String json = gson.toJson(new GameInfo(game));
                 out.println(json);
                 out.flush();
             }

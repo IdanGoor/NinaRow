@@ -42,5 +42,4 @@ public class History implements Serializable {
 
         return movesString.toString();
     }
-
 }

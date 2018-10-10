@@ -16,48 +16,6 @@ const colors = importAll(require.context("../../resources/colors/", false, /\.pn
 export default class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.UPDATE_INTERVAL = 1000;
-    this.isGameEnded = false;
-    this.isGameStarted = false;
-    this.state = {
-        game: "",
-        boardState: ""
-    };
-
-    this.fetchGameInterval = setInterval(this.getGame.bind(this), this.UPDATE_INTERVAL);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.fetchBoardStateInterval);
-    clearInterval(this.fetchGameInterval);
-  }
-
-  getGame() {
-      $.ajax({
-          method:'GET',
-          url: "/currentGame",
-          timeout: 4000,
-          success: function(game){
-              //TODO: add error message
-              this.setState(() => ({ game: game }));
-          }.bind(this)
-      });
-  }
-
-  getBoardState() {
-      return fetch("/gameRoom/boardState", { method: "GET", credentials: "include" })
-          .then(response => {
-              if (!response.ok) {
-                  throw response;
-              }
-              return response.json();
-          })
-          .then(boardState => {
-              this.setState(() => ({ boardState: boardState }));
-          })
-          .catch(err => {
-              throw err;
-          });
   }
 
   renderBoard(){
@@ -66,10 +24,6 @@ export default class Game extends React.Component {
   }
 
   render() {
-      if(this.state.game.status==="ACTIVE" && !this.isGameStarted){
-          this.isGameStarted = true;
-      }
-
     return (
         <div className={"game-layout"}>
             <GameInfo user={this.props.user} leaveGame={this.props.leaveGame}/>

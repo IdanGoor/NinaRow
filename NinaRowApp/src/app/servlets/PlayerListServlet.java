@@ -1,8 +1,11 @@
 package app.servlets;
 
+import Logic.GameDescriptor;
+import Logic.GameManager;
 import Logic.Player;
 import Logic.PlayerManager;
 import app.utils.ServletUtils;
+import app.utils.SessionUtils;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -12,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 @WebServlet(name = "PlayerListServlet", urlPatterns = {"/playerlist"})
@@ -70,4 +75,14 @@ public class PlayerListServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    class PlayersAndVisitors {
+
+        final private List<Player> players;
+        final private List<Player> visitors;
+
+        public PlayersAndVisitors(GameDescriptor game) {
+            this.players = game.getDynamicPlayers().getPlayers();
+            this.visitors = game.getDynamicPlayers().getVisitors();
+        }
+    }
 }

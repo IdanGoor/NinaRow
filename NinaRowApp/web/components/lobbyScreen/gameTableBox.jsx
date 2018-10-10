@@ -15,7 +15,7 @@ export default class GameTableBox extends React.Component {
         $("#errorMessage").text("");
         $.ajax({
             method:'POST',
-            data: "gameTitle=" + this.props.game.dynamicPlayers.gameTitle,
+            data: "gameTitle=" + this.props.game.title,
             url: "/joinPlayer",
             timeout: 4000,
             error: function(jqXHR, ajaxSetting, error) {
@@ -32,7 +32,7 @@ export default class GameTableBox extends React.Component {
         $("#errorMessage").text("");
         $.ajax({
             method:'POST',
-            data: "gameTitle=" + this.props.game.dynamicPlayers.gameTitle,
+            data: "gameTitle=" + this.props.game.title,
             url: "/joinVisitor",
             timeout: 4000,
             error: function(jqXHR, ajaxSetting, error) {
@@ -110,16 +110,17 @@ export default class GameTableBox extends React.Component {
     }
 
   render() {
-    const title = this.props.game.dynamicPlayers.gameTitle;
-    const creator = this.props.game.creator.name;
-    const rows = this.props.game.game.board.rows;
-    const columns = this.props.game.game.board.columns;
-    const target = this.props.game.game.target;
-    const variant = this.props.game.game.variant;
-    const status = this.props.game.status;
-    const playerLimit = this.props.game.dynamicPlayers.totalPlayers;
-    const playersPending = this.props.game.dynamicPlayers.players.length;
-    const visitors = this.props.game.dynamicPlayers.visitors.length;
+    const game = this.props.game;
+    const title = game.title;
+    const creator = game.creator.name;
+    const rows = game.rows;
+    const columns = game.columns;
+    const target = game.target;
+    const variant = game.variant;
+    const status = game.status;
+    const playerLimit = game.totalPlayers;
+    const playersPending = game.players.length;
+    const visitors = game.visitors.length;
     const isJoinAsPlayerDisabled = (playerLimit===playersPending);
 
     return (

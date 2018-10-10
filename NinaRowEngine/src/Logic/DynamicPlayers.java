@@ -128,4 +128,8 @@ public class DynamicPlayers {
             this.visitors.remove(player);
         }
     }
+
+    public List<Player> getPlayers(){ return this.players; }
+
+    public List<Player> getVisitors(){ return this.visitors; }
 }

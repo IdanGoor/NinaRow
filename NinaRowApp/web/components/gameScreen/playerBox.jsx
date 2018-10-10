@@ -11,9 +11,10 @@ export default class PlayerBox extends React.Component {
   render() {
     return (
         <div className={"player-box"}>
-          <div>IdanGoor</div>
-          <div>H</div>
+          <div>{this.props.name}</div>
+          <div>{this.props.type}</div>
           <div>clr</div>
+          <div>turn amount: 5</div>
         </div>
     );
   }

@@ -4,7 +4,7 @@
 
 .board-column{
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     height: fit-content;
 }
 

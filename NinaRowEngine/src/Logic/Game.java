@@ -55,8 +55,6 @@ public class Game implements Serializable {
     @XmlAttribute(name = "target", required = true)
     protected BigInteger target;
 
-    protected BoardOperation popOut = new PopoutOperation(this.board);
-    protected BoardOperation pushIn = new PushinOperation(this.board);
     /**
      * Gets the value of the board property.
      *
@@ -137,7 +135,6 @@ public class Game implements Serializable {
     public void init(){
         this.board.init();
         this.board.setCircular(isCircularMode());
-        this.board.setPopout(isPopoutMode());
         this.board.setTarget(this.target);
     }
 }

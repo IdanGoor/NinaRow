@@ -85,6 +85,8 @@ public class BoardServlet extends HttpServlet {
         final private String variant;
         final private int rows;
         final private BigInteger columns;
+        final private Player activePlayer;
+        final private String status;
 
         public BoardState(GameDescriptor game) {
             Board board = game.getGame().getBoard();
@@ -93,6 +95,8 @@ public class BoardServlet extends HttpServlet {
             this.variant = game.getGame().getVariant();
             this.rows = board.getRows();
             this.columns = board.getColumns();
+            this.activePlayer = game.getDynamicPlayers().getActivePlayer();
+            this.status = game.getStatus();
 
             for(int col=0; col < board.getColumns().intValue(); col++){
                 this.discsColumns.add(new Column(col ,discs, board.getRows()));
@@ -102,12 +106,16 @@ public class BoardServlet extends HttpServlet {
         class Column{
             final private int index;
             final private List<Disc> discs = new LinkedList<>();
+            final private boolean isFull;
+            final private boolean isEmpty;
 
             public Column(int index, Disc[][] discs, int rows){
                 this.index = index;
                 for(int row=0; row < rows; row++){
                     this.discs.add(discs[row][index]);
                 }
+                this.isFull = (discs[rows-1][index] != null);
+                this.isEmpty = (discs[0][index] == null);
             }
         }
     }

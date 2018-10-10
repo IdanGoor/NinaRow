@@ -9,15 +9,21 @@ export default class Board extends React.Component {
   }
 
   render() {
-      const squares = [];
-      for(let i=0;i<this.props.column.discs.length;i++){
-          squares.push(<img key={"square_"+i} className={"board-object"} src={BoardSquare}/>);
+      const discs = this.props.column.discs;
+      const squareObjects = [];
+      for(let i=0;i<discs.length;i++){
+          if(discs[i] === null)
+            squareObjects.push(<img key={"square_"+i} className={"board-object"} src={BoardSquare}/>);
+          else
+              squareObjects.push(<img key={"disc_"+discs[i].discId}
+                                    className={"board-object"}
+                                    src={this.props.colors.get(discs[i].player.name)}/>);
       }
 
     return (
-        <div className={"board-column"} id={"column_"+this.props.column.index}>
+        <div id={"column_"+this.props.column.index} className={"board-column"}>
             <div className={"number-square"}>{this.props.column.index+1}</div>
-            {squares}
+            {squareObjects}
             <div className={"number-square"}>{this.props.column.index+1}</div>
         </div>
     );

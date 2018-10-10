@@ -1,6 +1,5 @@
 package Logic;
 
-import sun.invoke.empty.Empty;
 
 import java.math.BigInteger;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -48,7 +47,6 @@ public class Board implements Serializable {
     private int[] discAmount;
     private List<Connect> connects = new ArrayList<>();
     private boolean isCircular = false;
-    private boolean isPopout = false;
     private static final Disc EMPTY = null;
 
 
@@ -111,10 +109,6 @@ public class Board implements Serializable {
     public void setCircular(boolean isCircular){
         this.isCircular = isCircular;
     }
-
-    public void setPopout(boolean isPopout){ this.isPopout = isPopout; }
-
-    public boolean isPopout(){return this.isPopout;}
 
     public boolean isConnectExists(){
         return this.connects.size()>0;

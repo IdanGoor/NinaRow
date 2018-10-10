@@ -7,10 +7,12 @@ export default class GameInfo extends React.Component {
   constructor(props) {
     super(props);
     this.UPDATE_INTERVAL = 1000;
+    this.isColorSet = false;
     this.state = {
         gameInfo: ""
     };
 
+    this.getGameInfo();
     this.fetchGameInterval = setInterval(this.getGameInfo.bind(this), this.UPDATE_INTERVAL);
   }
 
@@ -25,6 +27,10 @@ export default class GameInfo extends React.Component {
             timeout: 4000,
             success: function(gameInfo){
                 //TODO: add error message
+                if(gameInfo.status === "ACTIVE" && !this.isColorSet){
+                    this.props.setColors(gameInfo.players);
+                    this.isColorSet = true;
+                }
                 this.setState(() => ({ gameInfo: gameInfo }));
             }.bind(this)
         });
@@ -68,8 +74,8 @@ export default class GameInfo extends React.Component {
                 playerObjects.push(
                     <PlayerBox
                         key={"player_object_"+player.name}
-                        name={player.name}
-                        type={player.type}
+                        player={player}
+                        color={this.props.colors !== "" ? this.props.colors.get(player.name) : ""}
                     />
                 );
             }
@@ -89,7 +95,7 @@ export default class GameInfo extends React.Component {
         <div className={"page-column"} id={"game-info"}>
             <div className={"page-column-headline"}>Info</div>
             <div className={"page-column-content"}>
-                Hello <b>{this.props.user}</b>! Welcome to {this.state.gameInfo.title}.<br/>
+                Welcome <b>{this.props.user}</b> to {this.state.gameInfo.title}.<br/>
                 Target: {this.state.gameInfo.target}<br/>
                 Variant: {this.state.gameInfo.variant}<br/>
                 Total players: {this.state.gameInfo.totalPlayers}<br/>

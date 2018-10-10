@@ -31,37 +31,36 @@ public class PushInServlet extends HttpServlet {
             throws ServletException, IOException {
         String usernameFromSession = SessionUtils.getUsername(request);
         GameManager gameManager = ServletUtils.getGameManager(getServletContext());
+
         if (usernameFromSession == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().println("Player is not logged in");
         }
         else{
-            String gameTitleFromParameter = request.getParameter(Constants.GAME_TITLE);
             synchronized (this) {
-                if (!gameManager.isGameExists(gameTitleFromParameter)) {
+                String columnFromParameter = request.getParameter(Constants.COLUMN);
+                String gameTitleFromSession = SessionUtils.getGameTitle(request);
+                GameDescriptor game = gameManager.getGame(gameTitleFromSession);
+                if (columnFromParameter == null ||
+                        (Integer.parseInt(columnFromParameter)<game.getGame().getBoard().getRows()
+                        && Integer.parseInt(columnFromParameter)>game.getGame().getBoard().getColumns().intValue())){
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    response.getWriter().println("Game does not exist");
-                } else {
-                    GameDescriptor game = gameManager.getGame(gameTitleFromParameter);
-                    if(game.isGameFull()){
+                    response.getWriter().println("Column number is illegal");
+                }
+                else{
+                    int column = Integer.parseInt(columnFromParameter);
+                    Player activePlayer = game.getDynamicPlayers().getActivePlayer();
+                    if(!activePlayer.getName().equals(usernameFromSession)){
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                        response.getWriter().println("Game has reached its total players amount");
-                    }
-                    else if(game.isActive()){
-                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                        response.getWriter().println("Player can't join to a game that's already active");
+                        response.getWriter().println("Player cant play when its not his turn");
                     }
                     else{
-                        PlayerManager playerManager = ServletUtils.getPlayerManager(getServletContext());
-                        Player player = playerManager.getPlayer(usernameFromSession);
-                        if(game.isPlayerInGame(player)){
+                        if(!game.isPushInAllowed(activePlayer, column)){
                             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                            response.getWriter().println("Player is already in the game");
+                            response.getWriter().println("PushIn is not allowed in this column");
                         }
                         else{
-                            game.addPlayer(player);
-                            request.getSession(true).setAttribute(Constants.GAME_TITLE, gameTitleFromParameter);
-                            response.setStatus(HttpServletResponse.SC_OK);
+                            game.pushIn(column);
                         }
                     }
                 }

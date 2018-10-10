@@ -68,7 +68,6 @@ public class GameDescriptor {
     @XmlElement(name = "DynamicPlayers")
     protected DynamicPlayers dynamicPlayers;
 
-    private History history = new History();
     private int turnAmount = 0;
     private Random random = new Random();
     private Status status = Status.INACTIVE;
@@ -143,10 +142,6 @@ public class GameDescriptor {
         return this.turnAmount;
     }
 
-    public List<Move> getHistoryMoves(){
-        return this.history.getMoves();
-    }
-
     public Player getCreator(){return this.creator;}
 
     public void setCreator(Player creator){this.creator=creator;}
@@ -179,20 +174,8 @@ public class GameDescriptor {
 
         this.turnAmount = 0;
         this.dynamicPlayers.init();
-        this.history.init();
         this.game.init();
         this.isEnded = false;
-    }
-
-    public void executePlayerMove(int col, BoardOperation operation){
-        Player activePlayer = this.dynamicPlayers.getActivePlayer();
-        if(operation.isAllowed(activePlayer, col)){
-            operation.execute(activePlayer, col);
-            activePlayer.turnAmount++;
-            this.turnAmount++;
-            this.history.addMove(new Move(this.turnAmount, activePlayer, operation.toString(), col));
-            swapPlayers();
-        }
     }
 
     public void play(){
@@ -203,13 +186,13 @@ public class GameDescriptor {
             sleeper.setOnSucceeded(event ->
             {
                 if(!this.isEnded){
-                    if(this.game.board.isFull() && this.game.isPopoutMode() && this.game.popOut.hasOption(activePlayer)){
-                        int column = this.game.popOut.getRandomOption(activePlayer);
-                        executePlayerMove(column, this.game.popOut);
+                    if(this.game.board.isFull() && this.game.isPopoutMode() && this.hasPopOutOption(activePlayer)){
+                        int column = this.getRandomOption(activePlayer, this.getPopOutOptions(activePlayer));
+                        this.popOut(column);
                     }
                     else if(!this.game.board.isFull()){
-                        int column = this.game.pushIn.getRandomOption(activePlayer);
-                        executePlayerMove(column, this.game.pushIn);
+                        int column = this.getRandomOption(activePlayer, this.getPushInOptions(activePlayer));
+                        this.pushIn(column);
                     }
                 }
             });
@@ -226,7 +209,7 @@ public class GameDescriptor {
             Player activePlayer = this.dynamicPlayers.getActivePlayer();
 
             if(this.game.board.isConnectExists()
-                    || (this.game.isPopoutMode() && this.game.board.isFull() && !this.game.popOut.hasOption(activePlayer))
+                    || (this.game.isPopoutMode() && this.game.board.isFull() && !this.hasPopOutOption(activePlayer))
                     || (!this.game.isPopoutMode() && this.game.board.isFull())
                     || (this.dynamicPlayers.players.size() == 1))
                 endGame();
@@ -239,7 +222,6 @@ public class GameDescriptor {
     public void startGame(){
 //        this.turnAmount = 0;
 //        this.dynamicPlayers.init();
-//        this.history.init();
 //        this.game.init();
 //        this.isEnded = false;
         this.status = Status.ACTIVE;
@@ -302,6 +284,75 @@ public class GameDescriptor {
 
     public boolean isGameFull(){
         return this.dynamicPlayers.players.size() >= this.dynamicPlayers.totalPlayers;
+    }
+
+
+
+    public boolean isPushInAllowed(Player player, int column) {
+        return !this.game.board.isColumnFull(column);
+    }
+
+    public void pushIn(int column) {
+        Player activePlayer = this.dynamicPlayers.getActivePlayer();
+        if(this.isPushInAllowed(activePlayer, column)){
+            int row = this.game.board.getTopRow(column);
+            Disc disc = new Disc(activePlayer);
+            this.game.board.insertDisc(disc, row, column);
+            this.game.board.checkConnect(row, column);
+
+            activePlayer.turnAmount++;
+            this.turnAmount++;
+            swapPlayers();
+        }
+    }
+
+    public boolean isPopOutAllowed(Player player, int column) {
+        return this.game.isPopoutMode() && !this.game.board.isCellEmpty(0, column)
+                && this.game.board.getCell(0, column).getPlayer().equals(player);
+    }
+
+    public void popOut(int column) {
+        Player activePlayer = this.dynamicPlayers.getActivePlayer();
+        if(this.isPopOutAllowed(activePlayer, column)){
+            this.game.board.removeDisc(0, column);
+            for (int row=0; row<this.game.board.rows; row++){
+                if (!this.game.board.isCellEmpty(row,column))
+                    this.game.board.checkConnect(row, column);
+                else
+                    break;
+            }
+
+            activePlayer.turnAmount++;
+            this.turnAmount++;
+            swapPlayers();
+        }
+    }
+
+    private List<Integer> getPushInOptions(Player player){
+        List<Integer> optionalColumns = new ArrayList<>();
+        for(int col=0;col<this.game.board.columns.intValue();col++)
+            if(isPushInAllowed(player, col))
+                optionalColumns.add(col);
+
+        return optionalColumns;
+    }
+
+    private List<Integer> getPopOutOptions(Player player){
+        List<Integer> optionalColumns = new ArrayList<>();
+        for(int col=0;col<this.game.board.columns.intValue();col++)
+            if(isPopOutAllowed(player, col))
+                optionalColumns.add(col);
+
+        return optionalColumns;
+    }
+
+    private int getRandomOption(Player player, List<Integer> options){
+        int chosenColumn = this.random.nextInt(options.size());
+        return options.get(chosenColumn);
+    }
+
+    private boolean hasPopOutOption(Player player){
+        return getPopOutOptions(player).size() > 0;
     }
 
 

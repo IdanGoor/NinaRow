@@ -74,30 +74,22 @@ export default class GameTableBox extends React.Component {
     //     }
     // }
 
-    renderJoinButton(){
-      //TODO: if the game is already active then player cant join as player, only as visitor
-
-      const game = this.props.game;
-      let text;
-      let color;
-      if (game.status === gameUtils.GAME_CONSTS.IN_PROGRESS ||
-          game.players.length === game.playerLimit){
-        text="Join as Observer";
-        color="orange";
-      }
-      else{
-        text="Join as Player";
-        color="green";
+    renderJoinAsPlayerButton(){
+      let isDisabled = false;
+      let buttonType = "button-green";
+      if(this.props.game.players.length === this.props.game.totalPlayers){
+          isDisabled = true;
+          buttonType = "button-gray";
       }
 
       return (
           <button
-            className={`button-${color}`}
+            className={buttonType}
             style={{fontSize: "14px"}}
-            onClick={this.joinGameHandler.bind(this, game.name)}>
-              {text}
-          </button>
-      );
+            disabled={isDisabled}
+            onClick={this.joinAsPlayerHandler.bind(this)}>
+            Join as Player
+          </button>);
     }
 
     renderErrorMessage() {
@@ -119,7 +111,6 @@ export default class GameTableBox extends React.Component {
     const playerLimit = game.totalPlayers;
     const playersPending = game.players.length;
     const visitors = game.visitors.length;
-    const isJoinAsPlayerDisabled = (playerLimit===playersPending);
 
     return (
         <div className={"game-table-box"}>
@@ -133,18 +124,13 @@ export default class GameTableBox extends React.Component {
                         <li className={"game-table-box-cell"}><u>Board:</u>&nbsp;{rows}X{columns} (rows X columns)</li>
                         <li className={"game-table-box-cell"}><u>Target:</u>&nbsp;{target}</li>
                         <li className={"game-table-box-cell"}><u>Variant:</u>&nbsp;{variant}</li>
-                        <li className={"game-table-box-cell"}><u>Status:</u>&nbsp;{status}</li>
+                        <li className={"game-table-box-cell"}><u>Status:</u>&nbsp;
+                            <b style={status==="ACTIVE" ? {color: "lightgreen"}:{color: "red"}}>{status}</b></li>
                     </ul>
                 </div>
             </div>
             <div className={"game-table-box-buttons"}>
-                <button
-                    className={`button-green`}
-                    style={{fontSize: "14px"}}
-                    disabled={isJoinAsPlayerDisabled}
-                    onClick={this.joinAsPlayerHandler.bind(this)}>
-                    Join as Player
-                </button>
+                {this.renderJoinAsPlayerButton()}
                 <button
                     className={`button-orange`}
                     style={{fontSize: "14px"}}

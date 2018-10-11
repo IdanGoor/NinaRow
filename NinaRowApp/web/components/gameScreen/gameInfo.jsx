@@ -121,7 +121,7 @@ export default class GameInfo extends React.Component {
                 Target: {this.state.gameInfo.target}<br/>
                 Variant: {this.state.gameInfo.variant}<br/>
                 Total players: {this.state.gameInfo.totalPlayers}<br/>
-                Status: {this.state.gameInfo.status}<br/>
+                Status: <b style={this.state.gameInfo.status==="ACTIVE" ? {color: "lightgreen"}:{color: "red"}}>{this.state.gameInfo.status}</b><br/>
                 {this.renderLeaveButton()}
             </div>
 

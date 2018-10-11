@@ -17,6 +17,7 @@ public class GameInfo {
     final private int totalPlayers;
     final private List<Player> players;
     final private List<Player> visitors;
+    final private Player activePlayer;
 
     public GameInfo(GameDescriptor game) {
         this.title = game.getDynamicPlayers().getGameTitle();
@@ -29,5 +30,6 @@ public class GameInfo {
         this.totalPlayers = game.getDynamicPlayers().getTotalPlayers();
         this.players = game.getDynamicPlayers().getPlayers();
         this.visitors = game.getDynamicPlayers().getVisitors();
+        this.activePlayer = game.getDynamicPlayers().getActivePlayer();
     }
 }

@@ -122,20 +122,22 @@ export default class Board extends React.Component {
     renderPopOutButtons(){
         let buttons = [];
 
-        buttons.push(<img className={"board-object"}/>);
-        for(let i=0;i<this.state.board.columns;i++){
-            if(this.state.board.status === "INACTIVE" || this.state.board.activePlayer.name !== this.props.user)
-                buttons.push(
-                    <img id={"popOut_"+i} key={"popOut_"+i} className={"board-object"} src={ArrowGray}/>);
-            else
-                buttons.push(
-                    <img id={"popOut_"+i} key={"popOut_"+i} className={"board-object"} src={ArrowRed}
-                         onMouseOver={this.showPopOutColumn.bind(this, i)}
-                         onMouseLeave={this.unshowPopOutColumn.bind(this, i)}
-                         onMouseDown={this.clickPopOut.bind(this,i)}
-                         onMouseUp={this.releasePopOut.bind(this,i)}
-                    />
-                );
+        if(this.state.board.variant==="Popout"){
+            buttons.push(<img className={"board-object"}/>);
+            for(let i=0;i<this.state.board.columns;i++){
+                if(this.state.board.status === "INACTIVE" || this.state.board.activePlayer.name !== this.props.user)
+                    buttons.push(
+                        <img id={"popOut_"+i} key={"popOut_"+i} className={"board-object"} src={ArrowGray}/>);
+                else
+                    buttons.push(
+                        <img id={"popOut_"+i} key={"popOut_"+i} className={"board-object"} src={ArrowRed}
+                             onMouseOver={this.showPopOutColumn.bind(this, i)}
+                             onMouseLeave={this.unshowPopOutColumn.bind(this, i)}
+                             onMouseDown={this.clickPopOut.bind(this,i)}
+                             onMouseUp={this.releasePopOut.bind(this,i)}
+                        />
+                    );
+            }
         }
 
         return buttons;
@@ -153,10 +155,10 @@ export default class Board extends React.Component {
     renderRowNumberColumn(){
       let numbers = [];
 
-      numbers.push(<div className={"number-square"}/>);
-      for(let i=this.state.board.rows-1; i>=0;i--){
-          numbers.push(<div className={"number-square"}>{i+1}</div>);
+      for(let i=1; i<=this.state.board.rows;i++){
+          numbers.push(<div className={"number-square"}>{i}</div>);
       }
+      numbers.push(<div className={"number-square"}/>);
 
       return (
           <div className={"board-column"}>

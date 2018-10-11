@@ -48,6 +48,7 @@
     background-color: #888888;
     display: grid;
     grid-template-columns: 55% 35% 10%;
+    font-family: sans-serif;
 }
 
 

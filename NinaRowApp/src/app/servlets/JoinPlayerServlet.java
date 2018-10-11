@@ -59,9 +59,16 @@ public class JoinPlayerServlet extends HttpServlet {
                             response.getWriter().println("Player is already in the game");
                         }
                         else{
-                            game.addPlayer(player);
-                            request.getSession(true).setAttribute(Constants.GAME_TITLE, gameTitleFromParameter);
-                            response.setStatus(HttpServletResponse.SC_OK);
+                            String typeFromSession = SessionUtils.getUserType(request);
+                            if(typeFromSession.equals("Computer") && !game.isComputerAllowedToJoin()){
+                                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                                response.getWriter().println("Game will not be played with computer players only");
+                            }
+                            else{
+                                game.addPlayer(player);
+                                request.getSession(true).setAttribute(Constants.GAME_TITLE, gameTitleFromParameter);
+                                response.setStatus(HttpServletResponse.SC_OK);
+                            }
                         }
                     }
                 }

@@ -37,10 +37,9 @@ export default class Lobby extends React.Component {
       if(!this.state.isJoinedGame)
           $.ajax({
               method:'GET',
-              url: "/playerlist",
+              url: buildUrlWithContextPath("playerList"),
               timeout: 4000,
               success: function(r){
-                  //TODO: add error message
                   this.setState(() => ({ players: r }));
               }.bind(this)
           });
@@ -50,10 +49,9 @@ export default class Lobby extends React.Component {
       if(!this.state.isJoinedGame)
           $.ajax({
               method:'GET',
-              url: "/gamelist",
+              url: buildUrlWithContextPath("gameList"),
               timeout: 4000,
               success: function(r){
-                  //TODO: add error message
                   this.setState(() => ({ games: r }));
               }.bind(this)
           });

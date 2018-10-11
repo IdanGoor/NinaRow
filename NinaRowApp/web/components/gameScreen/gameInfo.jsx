@@ -23,10 +23,9 @@ export default class GameInfo extends React.Component {
     getGameInfo() {
         $.ajax({
             method:'GET',
-            url: "/gameInfo",
+            url: buildUrlWithContextPath("gameInfo"),
             timeout: 4000,
             success: function(gameInfo){
-                //TODO: add error message
                 if(gameInfo.status === "ACTIVE" && !this.isColorSet){
                     this.props.setColors(gameInfo.players);
                     this.isColorSet = true;
@@ -37,14 +36,13 @@ export default class GameInfo extends React.Component {
     }
 
     leaveGameHandler() {
-        $("#errorMessage").text("");
+      closeErrorMessage();
         $.ajax({
             method:'GET',
-            url: "/leaveGame",
+            url: buildUrlWithContextPath("leaveGame"),
             timeout: 4000,
             error: function(jqXHR, ajaxSetting, error) {
-                console.error("Failed to leave game");
-                $("#errorMessage").text("Error: " + jqXHR.responseText);
+                showErrorMessage("leave game", jqXHR.responseText);
             },
             success: function(){
                 this.props.leaveGame();
@@ -53,7 +51,7 @@ export default class GameInfo extends React.Component {
     }
 
     renderLeaveButton(){
-        // TODO: if the player is pc before game started then he cant leave
+        if(this.state.gameInfo.status === "ACTIVE" )
         return(
             <button
                 className={`button-red`}
@@ -112,8 +110,6 @@ export default class GameInfo extends React.Component {
             <div className={"page-column-content"}>
                 {this.renderVisitors()}
             </div>
-
-            <div id="errorMessage" className="error-message"/>
         </div>
             : <div/>
     );

@@ -49,14 +49,14 @@ public class LeaveGameServlet extends HttpServlet {
                     }
                     else{
                         String playerTypeFromSession = SessionUtils.getUserType(request);
-                        if(playerTypeFromSession.equals("Computer")){
+                        GameManager gameManager = ServletUtils.getGameManager(getServletContext());
+                        GameDescriptor game = gameManager.getGame(gameTitleFromSession);
+                        if(playerTypeFromSession.equals("Computer") && game.isPlaying(player) && game.isActive()){
                             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                             response.getWriter().println("Computer player cannot leave game");
                         }
                         else{
                             request.getSession(false).removeAttribute(Constants.GAME_TITLE);
-                            GameManager gameManager = ServletUtils.getGameManager(getServletContext());
-                            GameDescriptor game = gameManager.getGame(gameTitleFromSession);
                             game.removePlayer(player);
                         }
                     }

@@ -19,3 +19,13 @@ function wrapBuildingURLWithContextPath() {
 // call the wrapper method and expose a final method to be used to build complete resource names (buildUrlWithContextPath)
 var buildUrlWithContextPath = wrapBuildingURLWithContextPath();
 
+function showErrorMessage(operation, error){
+    $("#errorMessageContent").text("Error: " + error);
+    $("#errorMessage").css("display", "block");
+    console.log("Failed to "+operation);
+}
+
+function closeErrorMessage(){
+    $("#errorMessage").css("display", "none");
+}
+

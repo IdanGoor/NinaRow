@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "LoginServlet", urlPatterns = {"/users/login"})
+@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
     /**
@@ -78,6 +78,15 @@ public class LoginServlet extends HttpServlet {
                     }
                 }
             }
+        }
+    }
+
+    class User{
+        final private String name;
+        final private String type;
+        User(String name, String type){
+            this.name = name;
+            this.type = type;
         }
     }
 }

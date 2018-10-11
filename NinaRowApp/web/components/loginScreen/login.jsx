@@ -12,7 +12,7 @@ export default class Login extends React.Component {
 
       $.ajax({
           method:'GET',
-          url: "/users/login",
+          url: buildUrlWithContextPath("login"),
           timeout: 4000,
           success: function(r){
               this.setState(() => ({
@@ -29,21 +29,21 @@ export default class Login extends React.Component {
 
   handleLogin(e) {
     e.preventDefault();
-    $("#errorMessage").text("");
+    closeErrorMessage();
     const playerName = e.target.elements.playerName.value;
+    const playerType = e.target.elements.playerType.value;
     if (playerName === "")
-        $("#errorMessage").text("User name is empty, please try another one");
+        showErrorMessage("login", "User name is empty, please try another one");
     else if (playerName.length > 15)
-        $("#errorMessage").text("User name is too long, please try another one");
+        showErrorMessage("login", "User name is too long. please try another one that is less than 15 letters");
     else{
         $.ajax({
             method:'POST',
-            url: "/users/login",
+            url: buildUrlWithContextPath("login"),
             data: $(e.target).serialize(),
             timeout: 4000,
             error: function(jqXHR, ajaxSetting, error) {
-                console.error("Failed to submit");
-                $("#errorMessage").text("Error: " + jqXHR.responseText);
+               showErrorMessage("login", jqXHR.responseText);
                 this.setState(() => ({
                     playerName: "",
                     isLoggedIn: false
@@ -76,7 +76,6 @@ export default class Login extends React.Component {
                 <input type={"submit"} className={"button-green"} value={"Login"} style={{fontSize:"16px"}}/>
             </form>
 
-            <div id="errorMessage" className="error-message"/>
         </div> : <Lobby user={this.state.playerName} logout={this.logout.bind(this)}/>
     );
   }

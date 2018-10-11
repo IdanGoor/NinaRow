@@ -12,15 +12,14 @@ export default class GameTableBox extends React.Component {
   }
 
     joinAsPlayerHandler() {
-        $("#errorMessage").text("");
+      closeErrorMessage();
         $.ajax({
             method:'POST',
             data: "gameTitle=" + this.props.game.title,
-            url: "/joinPlayer",
+            url: buildUrlWithContextPath("joinPlayer"),
             timeout: 4000,
             error: function(jqXHR, ajaxSetting, error) {
-                console.error("Failed to join");
-                $("#errorMessage").text("Error: " + jqXHR.responseText);
+                showErrorMessage("join as player", jqXHR.responseText);
             },
             success: function(){
                 this.props.joinGame();
@@ -29,15 +28,14 @@ export default class GameTableBox extends React.Component {
     }
 
     joinAsVisitorHandler() {
-        $("#errorMessage").text("");
+      closeErrorMessage();
         $.ajax({
             method:'POST',
             data: "gameTitle=" + this.props.game.title,
-            url: "/joinVisitor",
+            url: buildUrlWithContextPath("joinVisitor"),
             timeout: 4000,
             error: function(jqXHR, ajaxSetting, error) {
-                console.error("Failed to join");
-                $("#errorMessage").text("Error: " + jqXHR.responseText);
+                showErrorMessage("join as visitor", jqXHR.responseText);
             },
             success: function(){
                 this.props.joinGame();
@@ -45,36 +43,36 @@ export default class GameTableBox extends React.Component {
         });
     }
 
-    deleteGameHandler(gameName) {
-        fetch("/games/deleteGame", {
-            method: "POST",
-            body: JSON.stringify(gameName),
-            credentials: "include"
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw response;
-                }
-                this.props.updateViewManager();
-            })
-            .catch(err => {
-                throw err;
-            });
-    }
+    // deleteGameHandler(gameName) {
+    //     fetch("/games/deleteGame", {
+    //         method: "POST",
+    //         body: JSON.stringify(gameName),
+    //         credentials: "include"
+    //     })
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 throw response;
+    //             }
+    //             this.props.updateViewManager();
+    //         })
+    //         .catch(err => {
+    //             throw err;
+    //         });
+    // }
 
-    renderDeleteButton() {
-        // const game = this.props.game;
-        // if (this.props.game.creator.name === this.props.playerName) {
-        //   return (
-        //       <button
-        //           className={"button-red"}
-        //           style={{fontSize: "14px"}}
-        //           onClick={this.deleteGameHandler.bind(this, game.name)}>
-        //             Delete
-        //       </button>
-        //   );
-        // }
-    }
+    // renderDeleteButton() {
+    //     const game = this.props.game;
+    //     if (this.props.game.creator.name === this.props.playerName) {
+    //       return (
+    //           <button
+    //               className={"button-red"}
+    //               style={{fontSize: "14px"}}
+    //               onClick={this.deleteGameHandler.bind(this, game.name)}>
+    //                 Delete
+    //           </button>
+    //       );
+    //     }
+    // }
 
     renderJoinButton(){
       //TODO: if the game is already active then player cant join as player, only as visitor
@@ -153,10 +151,8 @@ export default class GameTableBox extends React.Component {
                     onClick={this.joinAsVisitorHandler.bind(this)}>
                     Join as Visitor
                 </button>
-                {this.renderDeleteButton()}
                 {this.renderErrorMessage()}
             </div>
-            <div id="errorMessage" className="error-message"/>
         </div>
     );
   }

@@ -182,9 +182,8 @@ public class GameDescriptor {
         Player activePlayer = this.dynamicPlayers.getActivePlayer();
 
         if (activePlayer.isComputer() && !this.isEnded){
-            SleeperTask sleeper = new SleeperTask();
-            sleeper.setOnSucceeded(event ->
-            {
+            try{
+                Thread.sleep(500);
                 if(!this.isEnded){
                     if(this.game.board.isFull() && this.game.isPopoutMode() && this.hasPopOutOption(activePlayer)){
                         int column = this.getRandomOption(activePlayer, this.getPopOutOptions(activePlayer));
@@ -195,10 +194,9 @@ public class GameDescriptor {
                         this.pushIn(column);
                     }
                 }
-            });
-
-            Thread computerPlay = new Thread(sleeper);
-            computerPlay.start();
+            } catch(Exception e){
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -353,6 +351,29 @@ public class GameDescriptor {
 
     private boolean hasPopOutOption(Player player){
         return getPopOutOptions(player).size() > 0;
+    }
+
+    public boolean isComputerAllowedToJoin(){
+        boolean isAllowed = false;
+        if(this.dynamicPlayers.totalPlayers-this.dynamicPlayers.players.size() == 1){
+            for(Player player : this.dynamicPlayers.players){
+                if(player.isHuman())
+                    isAllowed = true;
+            }
+        }
+        else{
+            isAllowed = true;
+        }
+
+        return isAllowed;
+    }
+
+    public boolean isPlaying(Player player){
+        return this.dynamicPlayers.players.contains(player);
+    }
+
+    public boolean isVisiting(Player visitor){
+        return this.dynamicPlayers.visitors.contains(visitor);
     }
 
 

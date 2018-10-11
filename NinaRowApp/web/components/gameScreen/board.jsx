@@ -29,7 +29,7 @@ export default class Board extends React.Component {
     getBoard() {
         $.ajax({
             method:'GET',
-            url: "/board",
+            url: buildUrlWithContextPath("board"),
             timeout: 4000,
             success: function(board){
                 //TODO: add error message
@@ -52,16 +52,17 @@ export default class Board extends React.Component {
     }
 
   clickPushIn(column){
+      closeErrorMessage();
       $("#pushIn_"+`${column}`).attr("src", ArrowGreenHover);
       this.unshowPushInColumn(column);
 
       $.ajax({
           method:'POST',
-          url: "/pushIn",
+          url: buildUrlWithContextPath("pushIn"),
           data: "column="+column,
           timeout: 4000,
-          success: function(){
-              //TODO: add error message
+          error: function(jqXHR, ajaxSetting, error){
+              showErrorMessage("pushIn", jqXHR.responseText);
           }
       });
   }
@@ -79,16 +80,17 @@ export default class Board extends React.Component {
     }
 
     clickPopOut(column){
+      closeErrorMessage();
         $("#popOut_"+`${column}`).attr("src", ArrowRedHover);
         this.unshowPopOutColumn(column);
 
         $.ajax({
             method:'POST',
-            url: "/popOut",
+            url: buildUrlWithContextPath("popOut"),
             data: "column="+column,
             timeout: 4000,
-            success: function(){
-                //TODO: add error message
+            error: function(jqXHR, ajaxSetting, error){
+                showErrorMessage("popOut", jqXHR.responseText);
             }
         });
     }

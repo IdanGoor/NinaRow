@@ -199,7 +199,7 @@ th {
 .page-column-content {
   padding: 5px;
   margin: 5px auto 5px auto;
-  font-family:"sans-serif";
+  font-family:sans-serif;
 }
 
 
@@ -235,3 +235,46 @@ th {
 .page-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+
+.error-message{
+  display: none;
+}
+
+.modal-content {
+  position: fixed;
+  top: 0;
+  background-color: #fefefe;
+  width: 100%;
+  animation-name: slideIn;
+  animation-duration: 0.4s;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #FE2F2F;
+  color: white;
+  font-family: sans-serif;
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+@keyframes slideIn {
+  from {top: -300px; opacity: 0}
+  to {top: 0; opacity: 1}
+}
+

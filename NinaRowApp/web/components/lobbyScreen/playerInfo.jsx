@@ -12,13 +12,13 @@ export default class PlayerInfo extends React.Component {
   }
 
     logoutHandler() {
+      closeErrorMessage();
         $.ajax({
             method:'POST',
-            url: "/users/logout",
+            url: buildUrlWithContextPath("logout"),
             timeout: 4000,
             error: function(jqXHR, ajaxSetting, error) {
-                console.error("Failed to logout");
-                $("#errorMessage").text("Error: " + jqXHR.responseText);
+                showErrorMessage("logout", jqXHR.responseText);
             },
             success: function(){
                 this.props.logout();
@@ -32,6 +32,7 @@ export default class PlayerInfo extends React.Component {
 
     handleUpload(e){
         e.preventDefault();
+        closeErrorMessage();
         let fileLoaded = e.target.elements.fileLoaded.files[0];
         let formData = new FormData();
         formData.append("loaded-file-key", fileLoaded);
@@ -39,13 +40,12 @@ export default class PlayerInfo extends React.Component {
         $.ajax({
             method:'POST',
             data: formData,
-            url: "/upload",
+            url: buildUrlWithContextPath("upload"),
             processData: false, // Don't process the files
             contentType: false, // Set content type to false as jQuery will tell the server its a query string request
             // timeout: 4000,
             error: function(jqXHR, ajaxSetting, error) {
-                console.error("Failed to submit");
-                $("#errorMessage").text("Error: " + jqXHR.responseText);
+                showErrorMessage("upload file", jqXHR.responseText);
             }
         });
 
@@ -68,7 +68,6 @@ export default class PlayerInfo extends React.Component {
                     <button className={"button-red"} onClick={this.logoutHandler.bind(this)}>Logout</button>
                 </div>
             </div>
-            <div id="errorMessage" className="error-message"/>
         </div>
     );
   }

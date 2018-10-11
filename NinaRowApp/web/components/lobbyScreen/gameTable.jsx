@@ -18,7 +18,7 @@ export default class GameTable extends React.Component {
             gameObjects.push(
                 <GameTableBox
                     key={"game_table_object_"+game.title}
-                    playerName={this.props.playerName}
+                    user={this.props.user}
                     game={game}
                     joinGame={this.props.joinGame}
                 />

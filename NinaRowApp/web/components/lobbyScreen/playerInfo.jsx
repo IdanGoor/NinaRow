@@ -5,10 +5,6 @@ import "../../css/lobby/userInfo.css";
 export default class PlayerInfo extends React.Component {
   constructor(props) {
     super(props);
-    this.playerName = props.playerName;
-    this.state ={
-        showAddGameForm: false
-    };
   }
 
     logoutHandler() {
@@ -26,10 +22,6 @@ export default class PlayerInfo extends React.Component {
         });
     }
 
-  toggleAddGameForm(){
-      this.setState(()=>({showAddGameForm: !this.state.showAddGameForm}));
-  }
-
     handleUpload(e){
         e.preventDefault();
         closeErrorMessage();
@@ -43,7 +35,6 @@ export default class PlayerInfo extends React.Component {
             url: buildUrlWithContextPath("upload"),
             processData: false, // Don't process the files
             contentType: false, // Set content type to false as jQuery will tell the server its a query string request
-            // timeout: 4000,
             error: function(jqXHR, ajaxSetting, error) {
                 showErrorMessage("upload file", jqXHR.responseText);
             }
@@ -60,7 +51,7 @@ export default class PlayerInfo extends React.Component {
             </div>
             <div className={"page-column-content"}>
                 <div className={"user-info-content"}>
-                    <p><b>Name: </b>{this.playerName}</p>
+                    <p><b>Name: </b>{this.props.user.name}<br/><b>Type: </b>{this.props.user.type}</p>
                     <form id={"uploadForm"} onSubmit={this.handleUpload.bind(this)} encType={"multipart/form-data"}>
                         <input type={"file"} name={"fileLoaded"}/>
                         <input type={"submit"} value={"Upload File"} className={"button-green"}/>

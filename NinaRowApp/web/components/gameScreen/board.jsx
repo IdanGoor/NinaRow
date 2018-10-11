@@ -104,7 +104,7 @@ export default class Board extends React.Component {
 
         buttons.push(<img className={"board-object"}/>);
         for(let i=0;i<this.state.board.columns;i++){
-            if(this.state.board.status === "INACTIVE" || this.state.board.activePlayer.name !== this.props.user)
+            if(this.state.board.status === "INACTIVE" || this.state.board.activePlayer.name !== this.props.user.name)
                 buttons.push(
                     <img id={"pushIn_"+i} key={"pushIn_"+i} className={"board-object"} src={ArrowGray}/>);
             else
@@ -127,7 +127,7 @@ export default class Board extends React.Component {
         if(this.state.board.variant==="Popout"){
             buttons.push(<img className={"board-object"}/>);
             for(let i=0;i<this.state.board.columns;i++){
-                if(this.state.board.status === "INACTIVE" || this.state.board.activePlayer.name !== this.props.user)
+                if(this.state.board.status === "INACTIVE" || this.state.board.activePlayer.name !== this.props.user.name)
                     buttons.push(
                         <img id={"popOut_"+i} key={"popOut_"+i} className={"board-object"} src={ArrowGray}/>);
                 else

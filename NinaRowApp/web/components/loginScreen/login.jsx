@@ -6,7 +6,7 @@ export default class Login extends React.Component {
     super(props);
 
     this.state={
-        playerName: "",
+        user: "",
         isLoggedIn: false
     };
 
@@ -16,7 +16,7 @@ export default class Login extends React.Component {
           timeout: 4000,
           success: function(r){
               this.setState(() => ({
-                  playerName: r,
+                  user: r,
                   isLoggedIn: true
               }));
           }.bind(this)
@@ -45,13 +45,13 @@ export default class Login extends React.Component {
             error: function(jqXHR, ajaxSetting, error) {
                showErrorMessage("login", jqXHR.responseText);
                 this.setState(() => ({
-                    playerName: "",
+                    user: "",
                     isLoggedIn: false
                 }));
             }.bind(this),
             success: function(){
                 this.setState(() => ({
-                    playerName: playerName,
+                    user: {name: playerName, type: playerType},
                     isLoggedIn: true
                 }));
             }.bind(this)
@@ -76,7 +76,7 @@ export default class Login extends React.Component {
                 <input type={"submit"} className={"button-green"} value={"Login"} style={{fontSize:"16px"}}/>
             </form>
 
-        </div> : <Lobby user={this.state.playerName} logout={this.logout.bind(this)}/>
+        </div> : <Lobby user={this.state.user} logout={this.logout.bind(this)}/>
     );
   }
 }

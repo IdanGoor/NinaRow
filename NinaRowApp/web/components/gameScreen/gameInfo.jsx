@@ -51,12 +51,18 @@ export default class GameInfo extends React.Component {
     }
 
     renderLeaveButton(){
-        if(this.state.gameInfo.status === "ACTIVE" )
+      let isDisabled = false;
+      let buttonType = "button-red";
+        if(this.state.gameInfo.status === "ACTIVE" && this.props.user.type === "Computer"){
+            isDisabled = true;
+            buttonType = "button-gray";
+        }
         return(
             <button
-                className={`button-red`}
+                className={buttonType}
                 style={{fontSize: "14px"}}
-                onClick={this.leaveGameHandler.bind(this)}>
+                onClick={this.leaveGameHandler.bind(this)}
+                disabled={isDisabled}>
                 Leave Game
             </button>
         );
@@ -74,6 +80,7 @@ export default class GameInfo extends React.Component {
                         key={"player_object_"+player.name}
                         player={player}
                         color={this.props.colors !== "" ? this.props.colors.get(player.name) : ""}
+                        isPlaying={true}
                     />
                 );
             }
@@ -83,6 +90,23 @@ export default class GameInfo extends React.Component {
     }
 
     renderVisitors(){
+        let visitors = this.state.gameInfo.visitors;
+        let visitorObjects = [];
+
+        for (let visitorIndex in visitors){
+            if (visitors.hasOwnProperty(visitorIndex)) {
+                let visitor = visitors[visitorIndex];
+                visitorObjects.push(
+                    <PlayerBox
+                        key={"visitor_object_"+visitor.name}
+                        player={visitor}
+                        isPlaying={false}
+                    />
+                );
+            }
+        }
+
+        return visitorObjects;
 
     }
 
@@ -93,7 +117,7 @@ export default class GameInfo extends React.Component {
         <div className={"page-column"} id={"game-info"}>
             <div className={"page-column-headline"}>Info</div>
             <div className={"page-column-content"}>
-                Welcome <b>{this.props.user}</b> to {this.state.gameInfo.title}.<br/>
+                Welcome <b>{this.props.user.name}</b> to {this.state.gameInfo.title}.<br/>
                 Target: {this.state.gameInfo.target}<br/>
                 Variant: {this.state.gameInfo.variant}<br/>
                 Total players: {this.state.gameInfo.totalPlayers}<br/>

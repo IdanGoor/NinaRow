@@ -1,9 +1,13 @@
 package app.servlets;
 
+import Logic.GameDescriptor;
+import Logic.GameManager;
 import Logic.PlayerManager;
 import app.constants.Constants;
+import app.utils.GameInfo;
 import app.utils.ServletUtils;
 import app.utils.SessionUtils;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +15,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
@@ -32,8 +40,14 @@ public class LoginServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
         else{
-            response.getWriter().println(usernameFromSession);
-            response.setStatus(HttpServletResponse.SC_OK);
+            String userTypeFromSession = SessionUtils.getUserType(request);
+            User user = new User(usernameFromSession, userTypeFromSession);
+            try (PrintWriter out = response.getWriter()) {
+                Gson gson = new Gson();
+                String json = gson.toJson(user);
+                out.println(json);
+                out.flush();
+            }
         }
     }
 

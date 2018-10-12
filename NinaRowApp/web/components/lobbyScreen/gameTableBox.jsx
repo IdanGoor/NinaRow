@@ -5,10 +5,6 @@ import "../../css/lobby/gameTable.css";
 export default class GameTableBox extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      errMessage:""
-    }
   }
 
     joinAsPlayerHandler() {
@@ -17,7 +13,7 @@ export default class GameTableBox extends React.Component {
             method:'POST',
             data: "gameTitle=" + this.props.game.title,
             url: buildUrlWithContextPath("joinPlayer"),
-            // timeout: 4000,
+            timeout: 4000,
             error: function(jqXHR, ajaxSetting, error) {
                 showErrorMessage("join as player", jqXHR.responseText);
             },
@@ -43,36 +39,30 @@ export default class GameTableBox extends React.Component {
         });
     }
 
-    // deleteGameHandler(gameName) {
-    //     fetch("/games/deleteGame", {
-    //         method: "POST",
-    //         body: JSON.stringify(gameName),
-    //         credentials: "include"
-    //     })
-    //         .then(response => {
-    //             if (!response.ok) {
-    //                 throw response;
-    //             }
-    //             this.props.updateViewManager();
-    //         })
-    //         .catch(err => {
-    //             throw err;
-    //         });
-    // }
+    renderDeleteButton(){
+      if(this.props.game.creator.name === this.props.user.name)
+          return (
+              <button
+                  className={"button-red"}
+                  style={{fontSize: "14px"}}
+                  onClick={this.deleteGameHandler.bind(this)}>
+                  Delete
+              </button>
+          );
+    }
 
-    // renderDeleteButton() {
-    //     const game = this.props.game;
-    //     if (this.props.game.creator.name === this.props.playerName) {
-    //       return (
-    //           <button
-    //               className={"button-red"}
-    //               style={{fontSize: "14px"}}
-    //               onClick={this.deleteGameHandler.bind(this, game.name)}>
-    //                 Delete
-    //           </button>
-    //       );
-    //     }
-    // }
+    deleteGameHandler(){
+        closeErrorMessage();
+        $.ajax({
+            method:'POST',
+            data: "gameTitle=" + this.props.game.title,
+            url: buildUrlWithContextPath("deleteGame"),
+            timeout: 4000,
+            error: function(jqXHR, ajaxSetting, error) {
+                showErrorMessage("delete game", jqXHR.responseText);
+            }
+        });
+    }
 
     renderJoinAsPlayerButton(){
       let isDisabled = false;
@@ -90,13 +80,6 @@ export default class GameTableBox extends React.Component {
             onClick={this.joinAsPlayerHandler.bind(this)}>
             Join as Player
           </button>);
-    }
-
-    renderErrorMessage() {
-        if (this.state.errMessage) {
-            return <div className="error-message">{this.state.errMessage}</div>;
-        }
-        return null;
     }
 
   render() {
@@ -137,7 +120,7 @@ export default class GameTableBox extends React.Component {
                     onClick={this.joinAsVisitorHandler.bind(this)}>
                     Join as Visitor
                 </button>
-                {this.renderErrorMessage()}
+                {this.renderDeleteButton()}
             </div>
         </div>
     );

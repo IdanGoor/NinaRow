@@ -24,7 +24,7 @@ export default class GameInfo extends React.Component {
         $.ajax({
             method:'GET',
             url: buildUrlWithContextPath("gameInfo"),
-            // timeout: 4000,
+            timeout: 4000,
             success: function(gameInfo){
                 if(gameInfo.status === "ACTIVE" && !this.isColorSet){
                     this.props.setColors(gameInfo.players);

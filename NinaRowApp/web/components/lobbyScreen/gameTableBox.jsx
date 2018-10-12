@@ -125,7 +125,7 @@ export default class GameTableBox extends React.Component {
                         <li className={"game-table-box-cell"}><u>Target:</u>&nbsp;{target}</li>
                         <li className={"game-table-box-cell"}><u>Variant:</u>&nbsp;{variant}</li>
                         <li className={"game-table-box-cell"}><u>Status:</u>&nbsp;
-                            <b style={status==="ACTIVE" ? {color: "lightgreen"}:{color: "red"}}>{status}</b></li>
+                            <b style={status==="ACTIVE" ? {color: "LawnGreen "}:{color: "red"}}>{status}</b></li>
                     </ul>
                 </div>
             </div>

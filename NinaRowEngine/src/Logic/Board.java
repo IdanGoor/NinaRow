@@ -196,7 +196,6 @@ public class Board implements Serializable {
         connectDirection.check(row, col, connect);
 
         if (connect.size() >= this.target.intValue()) {
-            connect.setReachedTarget(true);
             this.connects.add(connect);
         }
     }

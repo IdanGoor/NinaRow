@@ -69,18 +69,21 @@ export default class GameInfo extends React.Component {
     }
 
     renderPlayers(){
-      let players = this.state.gameInfo.players;
+      let gameInfo = this.state.gameInfo;
+      let players = gameInfo.players;
         let playerObjects = [];
 
         for (let playerIndex in players){
             if (players.hasOwnProperty(playerIndex)) {
                 let player = players[playerIndex];
+
                 playerObjects.push(
                     <PlayerBox
                         key={"player_object_"+player.name}
                         player={player}
                         color={this.props.colors !== "" ? this.props.colors.get(player.name) : ""}
-                        isPlaying={true}
+                        isPlayer={true}
+                        isPlaying={gameInfo.status === "ACTIVE" && gameInfo.activePlayer.name === player.name}
                     />
                 );
             }
@@ -100,7 +103,7 @@ export default class GameInfo extends React.Component {
                     <PlayerBox
                         key={"visitor_object_"+visitor.name}
                         player={visitor}
-                        isPlaying={false}
+                        isPlayer={false}
                     />
                 );
             }
@@ -116,12 +119,11 @@ export default class GameInfo extends React.Component {
         this.state.gameInfo !== "" ?
         <div className={"page-column"} id={"game-info"}>
             <div className={"page-column-headline"}>Info</div>
-            <div className={"page-column-content"}>
+            <div className={"game-info-content page-column-content"}>
                 Welcome <b>{this.props.user.name}</b> to {this.state.gameInfo.title}.<br/>
-                Target: {this.state.gameInfo.target}<br/>
-                Variant: {this.state.gameInfo.variant}<br/>
-                Total players: {this.state.gameInfo.totalPlayers}<br/>
-                Status: <b style={this.state.gameInfo.status==="ACTIVE" ? {color: "lightgreen"}:{color: "red"}}>{this.state.gameInfo.status}</b><br/>
+                <u>Target:</u> {this.state.gameInfo.target}&nbsp;<u>Variant:</u> {this.state.gameInfo.variant}&nbsp;
+                <u>Total players:</u> {this.state.gameInfo.totalPlayers}&nbsp;
+                <u>Status:</u> <b style={this.state.gameInfo.status==="ACTIVE" ? {color: "LawnGreen"}:{color: "red"}}>{this.state.gameInfo.status}</b><br/>
                 {this.renderLeaveButton()}
             </div>
 

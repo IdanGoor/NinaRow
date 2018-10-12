@@ -22,9 +22,9 @@ export default class Board extends React.Component {
 
     return (
         <div id={"column_"+this.props.column.index} className={"board-column"}>
-            <div className={"number-square"}>{this.props.column.index+1}</div>
+            <div className={"board-object"}>{this.props.column.index+1}</div>
             {squareObjects}
-            <div className={"number-square"}>{this.props.column.index+1}</div>
+            <div className={"board-object"}>{this.props.column.index+1}</div>
         </div>
     );
   }

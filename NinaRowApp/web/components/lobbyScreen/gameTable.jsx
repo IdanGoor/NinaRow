@@ -45,7 +45,7 @@ export default class GameTable extends React.Component {
             <div className={"page-column-headline"}>
                 Games
             </div>
-            <div className={"page-column-content lobby-scrollbar"}>
+            <div className={"page-column-content page-scrollbar"}>
                 {this.renderGameObjects()}
             </div>
         </div>

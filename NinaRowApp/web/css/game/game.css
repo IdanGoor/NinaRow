@@ -30,6 +30,7 @@
     grid-area: gameInfo;
 }
 
+
 #game-board{
     grid-area: gameBoard;
 }
@@ -38,17 +39,44 @@
     grid-area: gameChat;
 }
 
-.player-box{
-    padding: 5px 5px;
+.player-box, .player-box-playing{
+    padding: 10px 10px;
     font-size: 15px;
-    color: #fff;
-    border-radius: 15px;
+    border-radius: 20px;
     text-align: center;
     margin: 2px;
-    background-color: #888888;
+    background-color: #66a3ff;
     display: grid;
-    grid-template-columns: 55% 35% 10%;
+    grid-template-columns: 10% 55% 25% 10%;
     font-family: sans-serif;
+
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.player-box-playing{
+    background-color: #4ddbff;
+    animation-name: float;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes float {
+    0% {transform: translateY(0)}
+    50% {transform: translateY(-10px)}
+    100% {transform: translateY(0)}
+}
+
+.game-info-content{
+    padding: 10px;
+    margin: 5px;
+    background-color: #1a75ff;
+    border-radius: 20px;
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    font-family: sans-serif;
+    height: fit-content;
+    text-align: center;
 }
 
 

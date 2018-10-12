@@ -57,7 +57,8 @@ public class LeaveGameServlet extends HttpServlet {
                         }
                         else{
                             request.getSession(false).removeAttribute(Constants.GAME_TITLE);
-                            game.removePlayer(player);
+                            if(game.isPlayerInGame(player))
+                                game.removePlayer(player);
                         }
                     }
                 }

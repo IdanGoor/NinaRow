@@ -218,18 +218,15 @@ public class GameDescriptor {
 
 
     public void startGame(){
-//        this.turnAmount = 0;
-//        this.dynamicPlayers.init();
-//        this.game.init();
-//        this.isEnded = false;
         this.status = Status.ACTIVE;
-
         play();
     }
 
     public void endGame(){
         this.isEnded = true;
         this.status = Status.INACTIVE;
+        this.dynamicPlayers.players.clear();
+        this.dynamicPlayers.visitors.clear();
     }
 
     public List<Player> getWinners(){
@@ -266,8 +263,8 @@ public class GameDescriptor {
     }
 
     public void removePlayer(Player player){
-        boolean wasActive = player.equals(this.dynamicPlayers.getActivePlayer());
         if(this.dynamicPlayers.players.contains(player)){
+            boolean wasActive = player.equals(this.dynamicPlayers.getActivePlayer());
             this.dynamicPlayers.remove(player);
             this.game.board.removeAllPlayerDiscs(player);
             this.game.board.checkConnectFullBoard();

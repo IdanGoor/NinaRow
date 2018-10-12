@@ -32,8 +32,9 @@ export default class Board extends React.Component {
             url: buildUrlWithContextPath("board"),
             timeout: 4000,
             success: function(board){
-                //TODO: add error message
                 this.setState(() => ({ board: board }));
+                if(board.isEnded)
+                    clearInterval(this.fetchBoardInterval);
             }.bind(this)
         });
     }
@@ -54,7 +55,6 @@ export default class Board extends React.Component {
   clickPushIn(column){
       closeErrorMessage();
       $("#pushIn_"+`${column}`).attr("src", ArrowGreenHover);
-      this.unshowPushInColumn(column);
 
       $.ajax({
           method:'POST',
@@ -63,7 +63,10 @@ export default class Board extends React.Component {
           timeout: 4000,
           error: function(jqXHR, ajaxSetting, error){
               showErrorMessage("pushIn", jqXHR.responseText);
-          }
+          },
+          success: function(){
+              this.unshowPushInColumn(column);
+          }.bind(this)
       });
   }
 
@@ -82,7 +85,6 @@ export default class Board extends React.Component {
     clickPopOut(column){
       closeErrorMessage();
         $("#popOut_"+`${column}`).attr("src", ArrowRedHover);
-        this.unshowPopOutColumn(column);
 
         $.ajax({
             method:'POST',
@@ -91,7 +93,10 @@ export default class Board extends React.Component {
             timeout: 4000,
             error: function(jqXHR, ajaxSetting, error){
                 showErrorMessage("popOut", jqXHR.responseText);
-            }
+            },
+            success: function(){
+                this.unshowPopOutColumn(column);
+            }.bind(this)
         });
     }
 

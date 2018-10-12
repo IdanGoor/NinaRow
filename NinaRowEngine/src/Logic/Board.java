@@ -197,6 +197,9 @@ public class Board implements Serializable {
 
         if (connect.size() >= this.target.intValue()) {
             this.connects.add(connect);
+            for(Disc dsc : connect){
+                dsc.setConnected(true);
+            }
         }
     }
 

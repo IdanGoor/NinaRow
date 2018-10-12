@@ -24,13 +24,15 @@ export default class GameInfo extends React.Component {
         $.ajax({
             method:'GET',
             url: buildUrlWithContextPath("gameInfo"),
-            timeout: 4000,
+            // timeout: 4000,
             success: function(gameInfo){
                 if(gameInfo.status === "ACTIVE" && !this.isColorSet){
                     this.props.setColors(gameInfo.players);
                     this.isColorSet = true;
                 }
                 this.setState(() => ({ gameInfo: gameInfo }));
+                if(gameInfo.isEnded)
+                    clearInterval(this.fetchGameInterval);
             }.bind(this)
         });
     }
@@ -113,6 +115,59 @@ export default class GameInfo extends React.Component {
 
     }
 
+    renderPlayersOrResults(){
+      return !this.state.gameInfo.isEnded ?
+          <div>
+              <div className={"page-column-headline"}>Players</div>
+              <div className={"page-column-content"}>
+                  {this.renderPlayers()}
+              </div>
+
+              <div className={"page-column-headline"}>Visitors</div>
+              <div className={"page-column-content"}>
+                  {this.renderVisitors()}
+              </div>
+          </div>
+          : this.renderResults()
+
+    }
+
+    renderResults(){
+      let resultMessage = "";
+      let winners = this.state.gameInfo.winners;
+      if(winners === null){
+          resultMessage = "There are no winners.";
+      }
+      else {
+          let hasWon = false;
+          for(let i = 0; i<winners.length; i++) {
+              if (winners[i].name === this.props.user.name) {
+                  hasWon = true;
+                  resultMessage = "Congratulations, You won!\n";
+                  break;
+              }
+          }
+
+          if(winners.length === 1 && !hasWon){
+              resultMessage = "The winner is "+winners[0].name;
+          }
+          else{
+              resultMessage.concat("The winners are: ");
+              for(let i = 0; i<winners.length; i++)
+                  resultMessage.concat(winners[i].name+" ");
+          }
+      }
+
+      return (
+          <div>
+              <div className={"page-column-headline"}>Results</div>
+              <div className={"page-column-content"} style={{fontSize:"20px", textAlign:"center"}}>
+                  <b>{resultMessage}</b>
+              </div>
+          </div>);
+
+    }
+
   render() {
 
     return (
@@ -126,16 +181,7 @@ export default class GameInfo extends React.Component {
                 <u>Status:</u> <b style={this.state.gameInfo.status==="ACTIVE" ? {color: "LawnGreen"}:{color: "red"}}>{this.state.gameInfo.status}</b><br/>
                 {this.renderLeaveButton()}
             </div>
-
-            <div className={"page-column-headline"}>Players</div>
-            <div className={"page-column-content"}>
-                {this.renderPlayers()}
-            </div>
-
-            <div className={"page-column-headline"}>Visitors</div>
-            <div className={"page-column-content"}>
-                {this.renderVisitors()}
-            </div>
+            {this.renderPlayersOrResults()}
         </div>
             : <div/>
     );

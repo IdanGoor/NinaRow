@@ -17,7 +17,7 @@ export default class GameTableBox extends React.Component {
             method:'POST',
             data: "gameTitle=" + this.props.game.title,
             url: buildUrlWithContextPath("joinPlayer"),
-            timeout: 4000,
+            // timeout: 4000,
             error: function(jqXHR, ajaxSetting, error) {
                 showErrorMessage("join as player", jqXHR.responseText);
             },

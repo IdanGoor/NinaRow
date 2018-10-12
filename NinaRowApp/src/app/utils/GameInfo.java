@@ -17,6 +17,8 @@ public class GameInfo {
     final private int totalPlayers;
     final private List<Player> players;
     final private List<Player> visitors;
+    final private boolean isEnded;
+    final private List<Player> winners;
     private Player activePlayer = null;
 
     public GameInfo(GameDescriptor game) {
@@ -32,5 +34,7 @@ public class GameInfo {
         this.visitors = game.getDynamicPlayers().getVisitors();
         if(!this.players.isEmpty())
             this.activePlayer = game.getDynamicPlayers().getActivePlayer();
+        this.isEnded = game.isEnded();
+        this.winners = game.getWinners();
     }
 }

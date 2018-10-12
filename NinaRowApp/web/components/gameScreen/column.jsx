@@ -17,7 +17,8 @@ export default class Board extends React.Component {
           else
               squareObjects.push(<img key={"disc_"+discs[i].discId}
                                     className={"board-object"}
-                                    src={this.props.colors.get(discs[i].player.name)}/>);
+                                    src={this.props.colors.get(discs[i].player.name)}
+                                    style={discs[i].isConnected ? {backgroundColor: "yellow"} : {}}/>);
       }
 
     return (

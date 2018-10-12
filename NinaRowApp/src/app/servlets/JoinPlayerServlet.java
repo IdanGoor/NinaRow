@@ -65,7 +65,17 @@ public class JoinPlayerServlet extends HttpServlet {
                                 response.getWriter().println("Game will not be played with computer players only");
                             }
                             else{
+                                if(game.getDynamicPlayers().getPlayers().size() == 0
+                                        && game.getDynamicPlayers().getVisitors().size() == 0) {
+                                    try {
+                                        game.init();
+                                    } catch (Exception e) {
+                                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                                        response.getWriter().println(e.getMessage());
+                                    }
+                                }
                                 game.addPlayer(player);
+                                player.init();
                                 request.getSession(true).setAttribute(Constants.GAME_TITLE, gameTitleFromParameter);
                                 response.setStatus(HttpServletResponse.SC_OK);
                             }

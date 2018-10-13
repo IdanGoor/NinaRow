@@ -73,6 +73,7 @@ public class GameDescriptor {
     private Status status = Status.INACTIVE;
     private boolean isEnded = false;
     private Player creator;
+    private Chat chat = new Chat();
 
     /**
      * Gets the value of the gameType property.
@@ -148,6 +149,8 @@ public class GameDescriptor {
 
     public String getStatus(){ return this.status.toString(); }
 
+    public Chat getChat(){ return this.chat; }
+
     public boolean isActive(){
         return this.status == Status.ACTIVE;
     }
@@ -175,6 +178,7 @@ public class GameDescriptor {
         this.turnAmount = 0;
         this.dynamicPlayers.init();
         this.game.init();
+        this.chat.init();
         this.isEnded = false;
     }
 
@@ -280,8 +284,6 @@ public class GameDescriptor {
     public boolean isGameFull(){
         return this.dynamicPlayers.players.size() >= this.dynamicPlayers.totalPlayers;
     }
-
-
 
     public boolean isPushInAllowed(Player player, int column) {
         return !this.game.board.isColumnFull(column);

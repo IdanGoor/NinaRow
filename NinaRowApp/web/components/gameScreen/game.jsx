@@ -3,6 +3,7 @@ import "../../css/global.css";
 import "../../css/game/game.css";
 import Board from "./board.jsx";
 import GameInfo from "./gameInfo.jsx";
+import Chat from "./chat.jsx";
 
 import ColorBlue from "../../resources/colors/color_blue.png";
 import ColorRed from "../../resources/colors/color_red.png";
@@ -48,6 +49,7 @@ export default class Game extends React.Component {
             <GameInfo user={this.props.user} leaveGame={this.props.leaveGame}
                       setColors={this.setColors.bind(this)} colors={this.state.colors}/>
             <Board user={this.props.user} colors={this.state.colorsBoard}/>
+            <Chat/>
         </div>
     );
   }

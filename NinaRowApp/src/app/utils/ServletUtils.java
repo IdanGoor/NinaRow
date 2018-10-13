@@ -1,12 +1,13 @@
 package app.utils;
 
-import Logic.GameDescriptor;
-import Logic.Player;
-import Logic.PlayerManager;
-import Logic.GameManager;
+import Logic.*;
+
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.util.List;
+
+import static app.constants.Constants.INT_PARAMETER_ERROR;
 
 public class ServletUtils {
     private static final String PLAYER_MANAGER_ATTRIBUTE_NAME = "playerManager";
@@ -33,4 +34,14 @@ public class ServletUtils {
         return (GameManager) servletContext.getAttribute(GAME_MANAGER_ATTRIBUTE_NAME);
     }
 
+    public static int getIntParameter(HttpServletRequest request, String name) {
+        String value = request.getParameter(name);
+        if (value != null) {
+            try {
+                return Integer.parseInt(value);
+            } catch (NumberFormatException numberFormatException) {
+            }
+        }
+        return INT_PARAMETER_ERROR;
+    }
 }

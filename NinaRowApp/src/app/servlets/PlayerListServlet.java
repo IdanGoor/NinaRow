@@ -71,15 +71,4 @@ public class PlayerListServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    class PlayersAndVisitors {
-
-        final private List<Player> players;
-        final private List<Player> visitors;
-
-        public PlayersAndVisitors(GameDescriptor game) {
-            this.players = game.getDynamicPlayers().getPlayers();
-            this.visitors = game.getDynamicPlayers().getVisitors();
-        }
-    }
 }

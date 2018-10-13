@@ -40,27 +40,33 @@ public class PopOutServlet extends HttpServlet {
             synchronized (this) {
                 String columnFromParameter = request.getParameter(Constants.COLUMN);
                 String gameTitleFromSession = SessionUtils.getGameTitle(request);
-                GameDescriptor game = gameManager.getGame(gameTitleFromSession);
-                if (columnFromParameter == null ||
-                        (Integer.parseInt(columnFromParameter)<game.getGame().getBoard().getRows()
-                                && Integer.parseInt(columnFromParameter)>game.getGame().getBoard().getColumns().intValue())){
+                if(gameTitleFromSession == null){
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    response.getWriter().println("Column number is illegal");
+                    response.getWriter().println("Player didn't join any game");
                 }
                 else{
-                    int column = Integer.parseInt(columnFromParameter);
-                    Player activePlayer = game.getDynamicPlayers().getActivePlayer();
-                    if(!activePlayer.getName().equals(usernameFromSession)){
+                    GameDescriptor game = gameManager.getGame(gameTitleFromSession);
+                    if (columnFromParameter == null ||
+                            (Integer.parseInt(columnFromParameter)<game.getGame().getBoard().getRows()
+                                    && Integer.parseInt(columnFromParameter)>game.getGame().getBoard().getColumns().intValue())){
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                        response.getWriter().println("Player cant play when its not his turn");
+                        response.getWriter().println("Column number is illegal");
                     }
                     else{
-                        if(!game.isPopOutAllowed(activePlayer, column)){
+                        int column = Integer.parseInt(columnFromParameter);
+                        Player activePlayer = game.getDynamicPlayers().getActivePlayer();
+                        if(!activePlayer.getName().equals(usernameFromSession)){
                             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                            response.getWriter().println("PopOut is not allowed in this column");
+                            response.getWriter().println("Player cant play when its not his turn");
                         }
                         else{
-                            game.popOut(column);
+                            if(!game.isPopOutAllowed(activePlayer, column)){
+                                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                                response.getWriter().println("PopOut is not allowed in this column");
+                            }
+                            else{
+                                game.popOut(column);
+                            }
                         }
                     }
                 }

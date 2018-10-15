@@ -30,6 +30,23 @@ export default class Game extends React.Component {
     };
   }
 
+    getGameInfo() {
+        $.ajax({
+            method:'GET',
+            url: buildUrlWithContextPath("gameInfo"),
+            timeout: 4000,
+            success: function(gameInfo){
+                if(gameInfo.status === "ACTIVE" && !this.isColorSet){
+                    this.props.setColors(gameInfo.players);
+                    this.isColorSet = true;
+                }
+                this.setState(() => ({ gameInfo: gameInfo }));
+                if(gameInfo.isEnded)
+                    clearInterval(this.fetchGameInterval);
+            }.bind(this)
+        });
+    }
+
   setColors(players){
     let colorsMapping = new Map();
     let colorsBoardMapping = new Map();

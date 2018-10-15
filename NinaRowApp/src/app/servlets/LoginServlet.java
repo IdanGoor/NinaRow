@@ -66,26 +66,17 @@ public class LoginServlet extends HttpServlet {
         String usernameFromSession = SessionUtils.getUsername(request);
         PlayerManager playerManager = ServletUtils.getPlayerManager(getServletContext());
         if (usernameFromSession == null) {
-            //user is not logged in yet
             String playerNameFromParameter = request.getParameter(Constants.PLAYER_NAME);
             String playerTypeFromParameter = request.getParameter(Constants.PLAYER_TYPE);
             if (playerNameFromParameter == null) {
-                //no username in session and no username in parameter -
-                //redirect back to the index page
-                //this return an HTTP code back to the browser telling it to load
             } else {
-                //normalize the username value
                 playerNameFromParameter = playerNameFromParameter.trim();
                 synchronized (this) {
                     if (playerManager.isPlayerExists(playerNameFromParameter)) {
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                         response.getWriter().println("Username " + playerNameFromParameter + " already exists");
                     } else {
-                        //add the new user to the users list
                         playerManager.addPlayer(playerNameFromParameter, playerTypeFromParameter);
-                        //set the username in a session so it will be available on each request
-                        //the true parameter means that if a session object does not exists yet
-                        //create a new one
                         request.getSession(true).setAttribute(Constants.PLAYER_NAME, playerNameFromParameter);
                         request.getSession(true).setAttribute(Constants.PLAYER_TYPE, playerTypeFromParameter);
                         response.setStatus(HttpServletResponse.SC_CREATED);

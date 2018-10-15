@@ -14,7 +14,6 @@ export default class Lobby extends React.Component {
       isJoinedGame: false,
       players: {}, // all players
       games: {}, // all games
-      errMessage: ""
     };
 
       this.fetchUsersInterval = setInterval(
@@ -26,7 +25,20 @@ export default class Lobby extends React.Component {
           this.getGames.bind(this),
           this.UPDATE_INTERVAL
       );
+
+      this.getGame();
   }
+
+    getGame(){
+        $.ajax({
+            method:'GET',
+            url: buildUrlWithContextPath("gameInfo"),
+            timeout: 4000,
+            success: function(){
+                this.setState(() => ({ isJoinedGame: true }));
+            }.bind(this)
+        });
+    }
 
   componentWillUnmount() {
     clearInterval(this.fetchUsersInterval);

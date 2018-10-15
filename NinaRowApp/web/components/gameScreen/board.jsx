@@ -39,11 +39,6 @@ export default class Board extends React.Component {
         });
     }
 
-  renderBoard(){
-      //TODO: at the begining it shows only the board with squares and numbers
-      //TODO: when game starts it show all the pushIn and popOut button (if needed)
-  }
-
   showPushInColumn(column){
       $("#column_"+`${column}`).css("background-color", "lightgreen");
   }
@@ -109,7 +104,9 @@ export default class Board extends React.Component {
 
         buttons.push(<img className={"board-object"} style={{opacity:"0"}}/>);
         for(let i=0;i<this.state.board.columns;i++){
-            if(this.state.board.status === "INACTIVE" || this.state.board.activePlayer.name !== this.props.user.name)
+            if(this.state.board.status === "INACTIVE"
+                || this.state.board.activePlayer.name !== this.props.user.name
+                || this.state.board.discsColumns[i].isFull)
                 buttons.push(
                     <img id={"pushIn_"+i} key={"pushIn_"+i} className={"board-object"} src={ArrowGray}/>);
             else
@@ -132,7 +129,12 @@ export default class Board extends React.Component {
         if(this.state.board.variant==="Popout"){
             buttons.push(<img className={"board-object"} style={{opacity:"0"}}/>);
             for(let i=0;i<this.state.board.columns;i++){
-                if(this.state.board.status === "INACTIVE" || this.state.board.activePlayer.name !== this.props.user.name)
+                if(this.state.board.status === "INACTIVE"
+                    || this.state.board.activePlayer.name !== this.props.user.name
+                    || this.state.board.discsColumns[i].isEmpty)
+                    buttons.push(
+                        <img id={"popOut_"+i} key={"popOut_"+i} className={"board-object"} src={ArrowGray}/>);
+                else if(this.state.board.discsColumns[i].discs[0].player.name !== this.props.user.name)
                     buttons.push(
                         <img id={"popOut_"+i} key={"popOut_"+i} className={"board-object"} src={ArrowGray}/>);
                 else

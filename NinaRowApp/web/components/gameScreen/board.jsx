@@ -36,20 +36,26 @@ export default class Board extends React.Component {
                 this.setState(() => ({ board: board }));
                 if(board.isEnded)
                     clearInterval(this.fetchBoardInterval);
-                if(!this.isSizeFixed){
+                if(!this.isSizeFixed) {
                     if(this.state.board.columns < 10) {
                         document.documentElement.style.setProperty('--board-object-size', '4vw');
+                        document.documentElement.style.setProperty('--board-object-line-height', '4vw');
                     }
-                    else if (this.state.board.columns >= 10 && this.state.board.columns < 20)
+                    else if (this.state.board.columns >= 10 && this.state.board.columns < 20){
                         document.documentElement.style.setProperty('--board-object-size', '3vw');
-                    else
+                        document.documentElement.style.setProperty('--board-object-line-height', '3vw');
+                    }
+                    else{
                         document.documentElement.style.setProperty('--board-object-size', '2vw');
+                        document.documentElement.style.setProperty('--board-object-line-height', '2vw');
+                    }
 
                     this.isSizeFixed = true;
                 }
             }.bind(this)
         });
     }
+
 
   showPushInColumn(column){
       $("#column_"+`${column}`).css("background-color", "lightgreen");
@@ -67,7 +73,6 @@ export default class Board extends React.Component {
           method:'POST',
           url: buildUrlWithContextPath("pushIn"),
           data: "column="+column,
-          timeout: 4000,
           error: function(jqXHR, ajaxSetting, error){
               showErrorMessage("pushIn", jqXHR.responseText);
           },
@@ -97,7 +102,6 @@ export default class Board extends React.Component {
             method:'POST',
             url: buildUrlWithContextPath("popOut"),
             data: "column="+column,
-            timeout: 4000,
             error: function(jqXHR, ajaxSetting, error){
                 showErrorMessage("popOut", jqXHR.responseText);
             },

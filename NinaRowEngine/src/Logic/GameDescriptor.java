@@ -187,7 +187,7 @@ public class GameDescriptor {
 
         if (activePlayer.isComputer() && !this.isEnded){
             try{
-                Thread.sleep(2000);
+                Thread.sleep(1000);
                 if(!this.isEnded){
                     if(this.game.board.isFull() && this.game.isPopoutMode() && this.hasPopOutOption(activePlayer)){
                         int column = this.getRandomOption(activePlayer, this.getPopOutOptions(activePlayer));

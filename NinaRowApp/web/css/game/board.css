@@ -48,3 +48,15 @@
     padding-right: 10px;
 }
 
+.blink{
+    animation-name: blink;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes blink {
+    0% {opacity: 1}
+    50% {opacity: 0.5}
+    100% {opacity: 1}
+}
+

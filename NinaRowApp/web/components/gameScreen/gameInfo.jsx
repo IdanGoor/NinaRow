@@ -116,20 +116,29 @@ export default class GameInfo extends React.Component {
     }
 
     renderPlayersOrResults(){
-      return !this.state.gameInfo.isEnded ?
-          <div>
-              <div className={"page-column-headline"}>Players</div>
-              <div className={"page-column-content"}>
-                  {this.renderPlayers()}
+      let playersAndVisitors = [];
+      if(!this.state.gameInfo.isEnded){
+          playersAndVisitors.push(
+              <div id={"gamePlayers"} key={"players"}>
+                  <div className={"page-column-headline"}>Players</div>
+                  <div className={"page-column-content"}>
+                      {this.renderPlayers()}
+                  </div>
               </div>
+          );
 
-              <div className={"page-column-headline"}>Visitors</div>
-              <div className={"page-column-content"}>
-                  {this.renderVisitors()}
+          playersAndVisitors.push(
+              <div id={"gameVisitors"} key={"visitors"}>
+                  <div className={"page-column-headline"}>Visitors</div>
+                  <div className={"page-column-content"}>
+                      {this.renderVisitors()}
+                  </div>
               </div>
-          </div>
-          : this.renderResults()
+          );
 
+      }
+
+      return !this.state.gameInfo.isEnded ? playersAndVisitors : this.renderResults();
     }
 
     renderResults(){
@@ -173,13 +182,15 @@ export default class GameInfo extends React.Component {
     return (
         this.state.gameInfo !== "" ?
         <div className={"page-column"} id={"game-info"}>
-            <div className={"page-column-headline"}>Info</div>
-            <div className={"game-info-content page-column-content"}>
-                Welcome <b>{this.props.user.name}</b> to {this.state.gameInfo.title}.<br/>
-                <u>Target:</u> {this.state.gameInfo.target}&nbsp;<u>Variant:</u> {this.state.gameInfo.variant}&nbsp;
-                <u>Total players:</u> {this.state.gameInfo.totalPlayers}&nbsp;
-                <u>Status:</u> <b style={this.state.gameInfo.status==="ACTIVE" ? {color: "LawnGreen"}:{color: "red"}}>{this.state.gameInfo.status}</b><br/>
-                {this.renderLeaveButton()}
+            <div id={"gameStats"}>
+                <div className={"page-column-headline"}>Info</div>
+                <div className={"game-info-content page-column-content"}>
+                    Welcome <b>{this.props.user.name}</b> to {this.state.gameInfo.title}.<br/>
+                    <u>Target:</u> {this.state.gameInfo.target}&nbsp;<u>Variant:</u> {this.state.gameInfo.variant}&nbsp;
+                    <u>Total players:</u> {this.state.gameInfo.totalPlayers}&nbsp;
+                    <u>Status:</u> <b style={this.state.gameInfo.status==="ACTIVE" ? {color: "LawnGreen"}:{color: "red"}}>{this.state.gameInfo.status}</b><br/>
+                    {this.renderLeaveButton()}
+                </div>
             </div>
             {this.renderPlayersOrResults()}
         </div>

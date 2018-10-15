@@ -1,11 +1,27 @@
+@media screen and (max-width: 1100px){
+    .board{
+        height: 30vw;
+    }
+}
+
+:root{
+    --board-object-size: 2vw;
+    --board-object-line-height: 2;
+}
+
 .board-object{
-    width: 2vw;
-    min-width: 2vw;
-    min-height: 2vw;
+    /*width: 2vw;*/
+    /*min-width: 2vw;*/
+    /*min-height: 2vw;*/
+    width: var(--board-object-size);
+    min-width: var(--board-object-size);
+    min-height: var(--board-object-size);
     text-align: center;
     font-weight: 400;
     font-size: 1vw;
-    line-height: 2;
+    /*line-height: 2;*/
+    line-height: var(--board-object-line-height);
+
 }
 
 

@@ -14,16 +14,47 @@
     /*}*/
 /*}*/
 
+@media screen and (max-width: 1100px){
+    .game-layout {
+        /*grid-template-rows: 75% 15% 10%;*/
+        grid-template-areas:
+                "gameBoard"
+                "gameInfo"
+                "gameChat";
+    }
+
+    #game-info{
+        display: grid;
+        grid-template-columns: 33% 34% 33%;
+        grid-template-areas: "gameStats gamePlayers gameVisitors";
+    }
+
+    #game-board{
+        height: 40vw;
+    }
+}
+
+@media screen and (min-width: 1100px){
+    .game-layout {
+        grid-template-columns: 20% 80%;
+        grid-template-rows: 80% 20%;
+        grid-template-areas:
+                "gameInfo gameBoard"
+                "gameInfo gameChat";
+    }
+}
+
+
 .game-layout{
     height: 100%;
     width: 100%;
     display: grid;
 
-    grid-template-columns: 20% 80%;
-    grid-template-rows: 80% 20%;
-    grid-template-areas:
-            "gameInfo gameBoard"
-            "gameInfo gameChat";
+    /*grid-template-columns: 20% 80%;*/
+    /*grid-template-rows: 80% 20%;*/
+    /*grid-template-areas:*/
+            /*"gameInfo gameBoard"*/
+            /*"gameInfo gameChat";*/
 }
 
 #game-info{
@@ -37,6 +68,18 @@
 
 #game-chat{
     grid-area: gameChat;
+}
+
+#game-players{
+    grid-area: gamePlayers;
+}
+
+#game-visitors{
+    grid-area: gameVisitors;
+}
+
+#game-stats{
+    grid-area: gameStats;
 }
 
 .player-box, .player-box-playing{

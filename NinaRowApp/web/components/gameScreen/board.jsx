@@ -13,6 +13,7 @@ export default class Board extends React.Component {
   constructor(props) {
     super(props);
     this.UPDATE_INTERVAL = 1000;
+    this.isSizeFixed = false;
 
     this.state={
         board: ""
@@ -35,6 +36,17 @@ export default class Board extends React.Component {
                 this.setState(() => ({ board: board }));
                 if(board.isEnded)
                     clearInterval(this.fetchBoardInterval);
+                if(!this.isSizeFixed){
+                    if(this.state.board.columns < 10) {
+                        document.documentElement.style.setProperty('--board-object-size', '4vw');
+                    }
+                    else if (this.state.board.columns >= 10 && this.state.board.columns < 20)
+                        document.documentElement.style.setProperty('--board-object-size', '3vw');
+                    else
+                        document.documentElement.style.setProperty('--board-object-size', '2vw');
+
+                    this.isSizeFixed = true;
+                }
             }.bind(this)
         });
     }

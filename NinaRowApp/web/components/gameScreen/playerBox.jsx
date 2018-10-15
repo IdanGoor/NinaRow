@@ -12,8 +12,8 @@ export default class PlayerBox extends React.Component {
   renderForPlayer(){
       let objects = [];
       if(this.props.isPlayer){
-          objects.push(<div>turn:{this.props.player.turnAmount}</div>);
-          objects.push(<img style={{width: "20px"}} src={this.props.color}/>);
+          objects.push(<div key={"turn_"+this.props.player.name}>turn:{this.props.player.turnAmount}</div>);
+          objects.push(<img key={"color_"+this.props.player.name} style={{width: "20px"}} src={this.props.color}/>);
       }
 
       return objects;

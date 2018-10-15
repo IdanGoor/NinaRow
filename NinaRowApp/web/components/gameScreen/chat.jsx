@@ -1,15 +1,8 @@
 import React from "react";
 import "../../css/global.css";
 import "../../css/game/board.css";
-import BoardColumn from "./column.jsx";
-import ArrowGreen from "../../resources/arrows/arrow_green.png";
-import ArrowGreenHover from "../../resources/arrows/arrow_green_hover.png";
-import ArrowRed from "../../resources/arrows/arrow_red.png";
-import ArrowRedHover from "../../resources/arrows/arrow_red_hover.png";
-import ArrowGray from "../../resources/arrows/arrow_gray.png";
 
-
-export default class Char extends React.Component {
+export default class Chat extends React.Component {
   constructor(props) {
     super(props);
     this.UPDATE_INTERVAL = 1000;
@@ -86,7 +79,7 @@ export default class Char extends React.Component {
                 </div>
                 <form id={"chatForm"} onSubmit={this.sendChat.bind(this)}>
                     <input type={"text"} id={"chatText"} name={"chatText"} style={{width:"70%"}}/>
-                    <input type={"Submit"} value={"Send"}/>
+                    <input type={"submit"} readOnly={"Send"}/>
                 </form>
             </div>
         </div>

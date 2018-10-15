@@ -102,7 +102,7 @@ export default class Board extends React.Component {
     renderPushInButtons(){
         let buttons = [];
 
-        buttons.push(<img className={"board-object"} style={{opacity:"0"}}/>);
+        buttons.push(<img key={"empty"} className={"board-object"} style={{opacity:"0"}}/>);
         for(let i=0;i<this.state.board.columns;i++){
             if(this.state.board.status === "INACTIVE"
                 || this.state.board.activePlayer.name !== this.props.user.name
@@ -127,7 +127,7 @@ export default class Board extends React.Component {
         let buttons = [];
 
         if(this.state.board.variant==="Popout"){
-            buttons.push(<img className={"board-object"} style={{opacity:"0"}}/>);
+            buttons.push(<img key={"empty"} className={"board-object"} style={{opacity:"0"}}/>);
             for(let i=0;i<this.state.board.columns;i++){
                 if(this.state.board.status === "INACTIVE"
                     || this.state.board.activePlayer.name !== this.props.user.name
@@ -165,9 +165,9 @@ export default class Board extends React.Component {
       let numbers = [];
 
       for(let i=1; i<=this.state.board.rows;i++){
-          numbers.push(<div className={"board-object"}>{i}</div>);
+          numbers.push(<div className={"board-object"} key={"rowNumber_"+i}>{i}</div>);
       }
-      numbers.push(<div className={"board-object"}/>);
+      numbers.push(<div key={"empty"} className={"board-object"}/>);
 
       return (
           <div className={"board-column"}>

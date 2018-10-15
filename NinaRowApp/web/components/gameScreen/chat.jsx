@@ -33,8 +33,9 @@ export default class Char extends React.Component {
             url: buildUrlWithContextPath("chat"),
             timeout: 4000,
             success: function(chat){
-                if(chat.version !== this.state.version)
+                if(chat.version !== this.state.version) {
                     this.setState(() => (chat));
+                }
                 // if(board.isEnded)
                 //     clearInterval(this.fetchBoardInterval);
             }.bind(this)
@@ -72,7 +73,7 @@ export default class Char extends React.Component {
             }
         }
 
-        return entryObjects;
+        return entryObjects.reverse();
     }
 
 

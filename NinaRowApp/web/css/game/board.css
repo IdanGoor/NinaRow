@@ -8,6 +8,7 @@
     line-height: 2;
 }
 
+
 .board-column{
     display: flex;
     flex-direction: column-reverse;

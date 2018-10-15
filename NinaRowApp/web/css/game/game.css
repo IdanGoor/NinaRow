@@ -101,6 +101,8 @@
     margin: 5px;
     padding: 5px;
     height: 100px;
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 /* width */

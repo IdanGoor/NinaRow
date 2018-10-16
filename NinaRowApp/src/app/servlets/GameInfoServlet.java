@@ -2,7 +2,6 @@ package app.servlets;
 
 import Logic.GameDescriptor;
 import Logic.GameManager;
-import Logic.PlayerManager;
 import app.utils.GameInfo;
 import app.utils.ServletUtils;
 import app.utils.SessionUtils;

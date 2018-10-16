@@ -144,7 +144,7 @@ export default class GameInfo extends React.Component {
     renderResults(){
       let resultMessage = "";
       let winners = this.state.gameInfo.winners;
-      if(winners === null){
+      if(winners.length === 0){
           resultMessage = "There are no winners.";
       }
       else {

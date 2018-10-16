@@ -1,7 +1,6 @@
 package app.servlets;
 
 import Logic.*;
-import app.utils.GameInfo;
 import app.utils.ServletUtils;
 import app.utils.SessionUtils;
 import com.google.gson.Gson;

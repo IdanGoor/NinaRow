@@ -29,8 +29,6 @@ export default class Chat extends React.Component {
                 if(chat.version !== this.state.version) {
                     this.setState(() => (chat));
                 }
-                // if(board.isEnded)
-                //     clearInterval(this.fetchBoardInterval);
             }.bind(this)
         });
     }
@@ -43,9 +41,6 @@ export default class Chat extends React.Component {
             data: $(e.target).serialize(),
             url: buildUrlWithContextPath("sendChat"),
             timeout: 4000,
-            // error: function(jqXHR, ajaxSetting, error){
-            //     showErrorMessage("send chat", jqXHR.responseText);
-            // }
         });
 
         $("#chatText").val("");
@@ -68,8 +63,6 @@ export default class Chat extends React.Component {
 
         return entryObjects.reverse();
     }
-
-
 
   render() {
     return (

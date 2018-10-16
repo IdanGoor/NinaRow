@@ -12,6 +12,7 @@ export default class Lobby extends React.Component {
 
     this.state = {
       isJoinedGame: false,
+      isVisiting: false,
       players: {}, // all players
       games: {}, // all games
     };
@@ -69,12 +70,12 @@ export default class Lobby extends React.Component {
           });
   }
 
-  joinGame(){
-      this.setState(() => ({ isJoinedGame: true }));
+  joinGame(isVisiting){
+      this.setState(() => ({ isJoinedGame: true, isVisiting: isVisiting }));
   }
 
   leaveGame(){
-      this.setState(() => ({ isJoinedGame: false }));
+      this.setState(() => ({ isJoinedGame: false, isVisiting: false }));
   }
 
   render() {
@@ -85,7 +86,7 @@ export default class Lobby extends React.Component {
                        joinGame={this.joinGame.bind(this)}/>
             <PlayerTable players={this.state.players}/>
         </div>
-            : <Game user={this.props.user} leaveGame={this.leaveGame.bind(this)}/>
+            : <Game user={this.props.user} leaveGame={this.leaveGame.bind(this)} isVisiting={this.state.isVisiting}/>
     );
   }
 }

@@ -18,7 +18,7 @@ export default class GameTableBox extends React.Component {
                 showErrorMessage("join as player", jqXHR.responseText);
             },
             success: function(){
-                this.props.joinGame();
+                this.props.joinGame(false);
             }.bind(this)
         });
     }
@@ -34,7 +34,7 @@ export default class GameTableBox extends React.Component {
                 showErrorMessage("join as visitor", jqXHR.responseText);
             },
             success: function(){
-                this.props.joinGame();
+                this.props.joinGame(true);
             }.bind(this)
         });
     }

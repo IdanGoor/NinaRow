@@ -152,8 +152,7 @@ export default class GameInfo extends React.Component {
           for(let i = 0; i<winners.length; i++) {
               if (winners[i].name === this.props.user.name) {
                   hasWon = true;
-                  resultMessage = "Congratulations, You won!\n";
-                  break;
+                  resultMessage = "Congratulations, You won! ";
               }
           }
 
@@ -161,9 +160,10 @@ export default class GameInfo extends React.Component {
               resultMessage = "The winner is "+winners[0].name;
           }
           else{
-              resultMessage.concat("The winners are: ");
+              resultMessage = resultMessage.concat("The winners are:\n");
+              console.log(resultMessage);
               for(let i = 0; i<winners.length; i++)
-                  resultMessage.concat(winners[i].name+" ");
+                  resultMessage = resultMessage.concat(winners[i].name+"\n");
           }
       }
 

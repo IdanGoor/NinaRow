@@ -58,6 +58,10 @@ export default class Game extends React.Component {
     this.setState(() => ({ colors: colorsMapping, colorsBoard: colorsBoardMapping }));
   }
 
+  renderChat(){
+      return !this.props.isVisiting ? <Chat/> : "";
+  }
+
 
   render() {
 
@@ -66,7 +70,7 @@ export default class Game extends React.Component {
             <GameInfo user={this.props.user} leaveGame={this.props.leaveGame}
                       setColors={this.setColors.bind(this)} colors={this.state.colors}/>
             <Board user={this.props.user} colors={this.state.colorsBoard}/>
-            <Chat/>
+            {this.renderChat()}
         </div>
     );
   }

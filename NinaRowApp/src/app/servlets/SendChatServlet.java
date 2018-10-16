@@ -46,12 +46,18 @@ public class SendChatServlet extends HttpServlet {
                 else{
                     PlayerManager playerManager = ServletUtils.getPlayerManager(getServletContext());
                     GameManager gameManager = ServletUtils.getGameManager(getServletContext());
+                    Player player = playerManager.getPlayer(usernameFromSession);
                     GameDescriptor game = gameManager.getGame(gameTitleFromSession);
-
-                    synchronized (this){
-                        game.getChat().addChatEntry(chatTextFromParameter, playerManager.getPlayer(usernameFromSession));
+                    if(game.isVisiting(player)){
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        response.getWriter().println("Visitor is not allowed to send messages to chat");
                     }
-                    response.setStatus(HttpServletResponse.SC_OK);
+                    else{
+                        synchronized (this){
+                            game.getChat().addChatEntry(chatTextFromParameter, playerManager.getPlayer(usernameFromSession));
+                        }
+                        response.setStatus(HttpServletResponse.SC_OK);
+                    }
                 }
             }
         }

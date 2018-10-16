@@ -48,17 +48,22 @@ public class LeaveGameServlet extends HttpServlet {
                         response.getWriter().println("Player didn't join any game");
                     }
                     else{
-                        String playerTypeFromSession = SessionUtils.getUserType(request);
                         GameManager gameManager = ServletUtils.getGameManager(getServletContext());
-                        GameDescriptor game = gameManager.getGame(gameTitleFromSession);
-                        if(playerTypeFromSession.equals("Computer") && game.isPlaying(player) && game.isActive()){
-                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                            response.getWriter().println("Computer player cannot leave game");
+                        if(!gameManager.isGameExists(gameTitleFromSession)){
+                            request.getSession(false).removeAttribute(Constants.GAME_TITLE);
                         }
                         else{
-                            request.getSession(false).removeAttribute(Constants.GAME_TITLE);
-                            if(game.isPlayerInGame(player))
-                                game.removePlayer(player);
+                            String playerTypeFromSession = SessionUtils.getUserType(request);
+                            GameDescriptor game = gameManager.getGame(gameTitleFromSession);
+                            if(playerTypeFromSession.equals("Computer") && game.isPlaying(player) && game.isActive()){
+                                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                                response.getWriter().println("Computer player cannot leave an active game");
+                            }
+                            else{
+                                request.getSession(false).removeAttribute(Constants.GAME_TITLE);
+                                if(game.isPlayerInGame(player))
+                                    game.removePlayer(player);
+                            }
                         }
                     }
                 }

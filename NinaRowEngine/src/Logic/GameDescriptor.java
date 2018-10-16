@@ -74,6 +74,7 @@ public class GameDescriptor {
     private boolean isEnded = false;
     private Player creator;
     private Chat chat = new Chat();
+    private List<Player> winners = new ArrayList<>();
 
     /**
      * Gets the value of the gameType property.
@@ -150,6 +151,8 @@ public class GameDescriptor {
     public String getStatus(){ return this.status.toString(); }
 
     public Chat getChat(){ return this.chat; }
+
+    public List<Player> getWinners(){ return this.winners; }
 
     public boolean isActive(){
         return this.status == Status.ACTIVE;
@@ -230,11 +233,12 @@ public class GameDescriptor {
     public void endGame(){
         this.isEnded = true;
         this.status = Status.INACTIVE;
+        this.winners = calcWinners();
         this.dynamicPlayers.players.clear();
         this.dynamicPlayers.visitors.clear();
     }
 
-    public List<Player> getWinners(){
+    public List<Player> calcWinners(){
         List<Player> winners = new ArrayList<>();
         if(this.isEnded){
             if(this.dynamicPlayers.players.size() == 1)
@@ -276,6 +280,9 @@ public class GameDescriptor {
 
             if(wasActive)
                 swapPlayers();
+
+            if(this.status.equals(Status.ACTIVE) && this.dynamicPlayers.players.size() == 1)
+                endGame();
         }
 
         if(this.dynamicPlayers.visitors.contains(player)){

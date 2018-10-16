@@ -1,4 +1,5 @@
 import React from "react";
+import "../../css/global.css";
 import "../../css/lobby/lobby.css";
 import "../../css/lobby/gameTable.css";
 import GameTableBox from "./gameTableBox.jsx";
@@ -45,7 +46,7 @@ export default class GameTable extends React.Component {
             <div className={"page-column-headline"}>
                 Games
             </div>
-            <div className={"page-column-content page-scrollbar"}>
+            <div className={"game-table-content page-column-content page-scrollbar"}>
                 {this.renderGameObjects()}
             </div>
         </div>

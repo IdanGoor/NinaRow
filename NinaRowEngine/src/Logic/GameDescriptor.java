@@ -213,7 +213,8 @@ public class GameDescriptor {
             if(this.game.board.isConnectExists()
                     || (this.game.isPopoutMode() && this.game.board.isFull() && !this.hasPopOutOption(activePlayer))
                     || (!this.game.isPopoutMode() && this.game.board.isFull())
-                    || (this.dynamicPlayers.players.size() == 1))
+                    || (this.dynamicPlayers.players.size() == 1)
+                    || (!this.dynamicPlayers.isHumanPlayerStilExists()))
                 endGame();
             else
                 this.play();
@@ -272,6 +273,7 @@ public class GameDescriptor {
             this.dynamicPlayers.remove(player);
             this.game.board.removeAllPlayerDiscs(player);
             this.game.board.checkConnectFullBoard();
+
             if(wasActive)
                 swapPlayers();
         }

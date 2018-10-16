@@ -2,7 +2,7 @@ import React from "react";
 import "../../css/lobby/lobby.css";
 import "../../css/lobby/userInfo.css";
 
-export default class PlayerInfo extends React.Component {
+export default class UserInfo extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -51,10 +51,10 @@ export default class PlayerInfo extends React.Component {
             </div>
             <div className={"page-column-content"}>
                 <div className={"user-info-content"}>
-                    <p><b>Name: </b>{this.props.user.name}<br/><b>Type: </b>{this.props.user.type}</p>
+                    <p style={{margin:"5px"}}><b>Name: </b>{this.props.user.name}<br/><br/><b>Type: </b>{this.props.user.type}</p>
                     <form id={"uploadForm"} onSubmit={this.handleUpload.bind(this)} encType={"multipart/form-data"}>
                         <input type={"file"} name={"fileLoaded"}/>
-                        <input type={"submit"} value={"Upload File"} className={"button-green"}/>
+                        <input type={"submit"} value={"Upload"} className={"button-green"}/>
                     </form>
                     <button className={"button-red"} onClick={this.logoutHandler.bind(this)}>Logout</button>
                 </div>

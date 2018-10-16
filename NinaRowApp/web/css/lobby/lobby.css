@@ -1,52 +1,19 @@
-/*@media screen and (max-width: 700px){*/
-  /*.lobby-layout {*/
-    /*grid-template-rows: 10% 50% 50% 50%;*/
-    /*grid-template-areas:*/
-            /*"takiLogo"*/
-            /*"userInfo"*/
-            /*"usersTable"*/
-            /*"gamesTable";*/
-  /*}*/
-/*}*/
-
-/*@media screen and (min-width: 700px) and (max-width: 900px){*/
-  /*.lobby-layout {*/
-    /*grid-template-rows: 10% 60% 50%;*/
-    /*grid-template-columns: 50% 50%;*/
-    /*grid-template-areas:*/
-            /*"takiLogo takiLogo"*/
-            /*"userInfo usersTable"*/
-            /*"gamesTable gamesTable";*/
-  /*}*/
-/*}*/
-
-/*@media screen and (min-width: 900px){*/
-  /*.lobby-layout {*/
-    /*grid-template-rows: 20% 80%;*/
-    /*grid-template-columns: 20% 60% 20%;*/
-    /*grid-template-areas:*/
-            /*"takiLogo takiLogo takiLogo"*/
-            /*"userInfo gamesTable usersTable";*/
-  /*}*/
-  /*.lobby-column{*/
-    /*display: grid;*/
-    /*grid-template-rows: 10% 90%;*/
-  /*}*/
-/*}*/
-
+@media screen and (min-width: 1100px){
+  .lobby-layout {
+    display: grid;
+    grid-template-columns: 25% 55% 20%;
+    grid-template-areas:
+            "userInfo gamesTable playersTable";
+  }
+}
 
 .lobby-layout{
   width: 100%;
   height: 100%;
-  display: grid;
-
-  grid-template-columns: 20% 60% 20%;
-  grid-template-areas:
-  "userInfo gamesTable usersTable";
 }
 
-#users-table{
-  grid-area: usersTable;
+#players-table{
+  grid-area: playersTable;
 }
 
 #games-table{

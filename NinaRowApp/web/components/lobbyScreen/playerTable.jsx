@@ -1,6 +1,7 @@
 import React from "react";
+import "../../css/global.css";
 import "../../css/lobby/lobby.css";
-import "../../css/lobby/userTable.css";
+import "../../css/lobby/playerTable.css";
 
 export default class PlayerTable extends React.Component {
   constructor(props) {
@@ -9,7 +10,7 @@ export default class PlayerTable extends React.Component {
 
   renderPlayerTable() {
     return (
-      <table className={"users-table"}>
+      <table className={"players-table"}>
         <tbody>
           <tr>
               <th>Name</th>
@@ -28,11 +29,11 @@ export default class PlayerTable extends React.Component {
 
   render() {
     return(
-        <div className={"page-column"} id={"users-table"}>
+        <div className={"page-column"} id={"players-table"}>
             <div className={"page-column-headline"}>
                 Users
             </div>
-            <div className={"page-column-content lobby-scrollbar"}>
+            <div className={"player-table-content page-column-content page-scrollbar"}>
                 {this.renderPlayerTable()}
             </div>
         </div>);

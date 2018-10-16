@@ -1,3 +1,11 @@
+@media screen and (max-width: 1100px){
+    .user-info-content{
+        display: flex;
+        flex-direction: row;
+
+    }
+}
+
 .user-info-content{
     padding: 10px;
     margin: 5px;

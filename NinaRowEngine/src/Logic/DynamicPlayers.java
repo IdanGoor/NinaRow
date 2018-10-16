@@ -132,4 +132,11 @@ public class DynamicPlayers {
     public List<Player> getPlayers(){ return this.players; }
 
     public List<Player> getVisitors(){ return this.visitors; }
+
+    public boolean isHumanPlayerStilExists(){
+        for(Player player : this.players)
+            if(player.isHuman())
+                return true;
+        return false;
+    }
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import Lobby from "../lobbyScreen/lobby.jsx";
+import "../../css/login/login.css";
 
 export default class Login extends React.Component {
   constructor(props) {
